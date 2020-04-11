@@ -1,5 +1,5 @@
 - project:
-    name: Juniper/contrail-packages
+    name: tungstenfabric/tf-packages
     check:
       jobs:
         - lint-rpm-specs
