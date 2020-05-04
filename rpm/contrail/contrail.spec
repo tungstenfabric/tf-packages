@@ -1022,6 +1022,7 @@ Requires:          python-simplejson
 Requires:          python-six
 Requires:          python-stevedore
 Requires:          python-pycassa
+Requires:          python-attrdict
 
 %description -n python-contrail
 Contrail Virtual Router utils package
