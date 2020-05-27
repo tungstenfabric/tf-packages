@@ -33,7 +33,6 @@ BuildRequires: gcc-c++
 Requires: python-ironicclient
 Requires: python-keystoneclient >= 0.2.0
 Requires: python-gevent
-Requires: python-geventhttpclient
 Requires: python-netaddr
 Requires: python-kombu
 Requires: python-contrail >= %{_verstr}-%{_relstr}

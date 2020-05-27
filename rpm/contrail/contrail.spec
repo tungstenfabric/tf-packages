@@ -581,7 +581,6 @@ Requires: python-gevent >= 1.0
 %if 0%{?rhel} <= 6
 Requires:          python-gevent
 %endif
-Requires:           python-geventhttpclient
 Requires:           python-lxml >= 2.3.2
 Requires:           python-pycassa
 Requires:           python-thrift >= 0.9.1
@@ -702,7 +701,6 @@ Requires:           redis >= 2.6.13-1
 Requires:           python-contrail >= %{_verstr}-%{_relstr}
 Requires:           python-psutil >= 0.6.0
 Requires:           python-prettytable
-Requires:           python-geventhttpclient
 Requires:           protobuf
 Requires:           cassandra-cpp-driver
 Requires:           libzookeeper
