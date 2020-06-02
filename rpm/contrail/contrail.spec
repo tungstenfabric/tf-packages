@@ -888,15 +888,8 @@ Contrail kubernetes network manager package
 This package contains the kubernetes network management modules.
 %files kube-manager
 %{python_sitelib}/kube_manager*
+%{python3_sitelib}/kube_manager*
 %{_bindir}/contrail-kube-manager
-
-%pre kube-manager
-set -e
-# Create the "contrail" user
-getent group contrail >/dev/null || groupadd -r contrail
-getent passwd contrail >/dev/null || \
-  useradd -r -g contrail -d /var/lib/contrail -s /bin/false \
-  -c "OpenContail daemon" contrail
 
 %post kube-manager
 set -e
