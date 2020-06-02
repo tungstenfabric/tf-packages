@@ -246,6 +246,12 @@ cp %{_manifestFile} %{buildroot}/opt/contrail/manifest.xml
 %endif
 # Install section of contrail-manifest package - End
 
+# python3 workarounds section - Start
+if [ -e %{buildroot}/usr/bin/contrail-kube-manager-py3 ]; then
+  cp -f %{buildroot}/usr/bin/contrail-kube-manager-py3 %{buildroot}/usr/bin/contrail-kube-manager
+fi
+# python3 workarounds section - End
+
 %files
 
 %package vrouter
@@ -878,34 +884,23 @@ Summary:            Kubernetes network manager
 
 Group:              Applications/System
 
-Requires:    python-contrail >= %{_verstr}-%{_relstr}
-Requires:    python-gevent
-Requires:    python2-requests >= 2.20.0
-Requires:    python2-future
-Requires:    python-configparser
+Requires:    python3-contrail >= %{_verstr}-%{_relstr}
+#Requires:    python3-gevent
+#Requires:    python3-requests >= 2.20.0
+#Requires:    python3-future
+#Requires:    python-configparser
 
 %description kube-manager
 Contrail kubernetes network manager package
 This package contains the kubernetes network management modules.
-%files kube-manager
-%{python_sitelib}/kube_manager*
-%{_bindir}/contrail-kube-manager
 
-%pre kube-manager
-set -e
-# Create the "contrail" user
-getent group contrail >/dev/null || groupadd -r contrail
-getent passwd contrail >/dev/null || \
-  useradd -r -g contrail -d /var/lib/contrail -s /bin/false \
-  -c "OpenContail daemon" contrail
+%files kube-manager
+%{python3_sitelib}/kube_manager*
+%{_bindir}/contrail-kube-manager
+/usr/share/contrail/kube-manager/requirements.txt
 
 %post kube-manager
-set -e
-mkdir -p /var/log/contrail /var/lib/contrail/ /etc/contrail/
-chown -R contrail:adm /var/log/contrail
-chmod 0750 /var/log/contrail
-chown -R contrail:contrail /var/lib/contrail/ /etc/contrail/
-chmod 0750 /etc/contrail/
+pip3 install -r /usr/share/contrail/kube-manager/requirements.txt
 
 %package mesos-manager
 Summary:            Mesos network manager
@@ -1062,6 +1057,10 @@ and common api server libraries.
 # should be packaged as needed.
 %{python3_sitelib}/cfgm_common*
 %{python3_sitelib}/contrail_config_common*
+%{python_sitelib}/libpartition*
+%{python_sitelib}/pysandesh*
+%{python3_sitelib}/sandesh-0.1*dev*
+%{python3_sitelib}/sandesh_common*
 %{python3_sitelib}/vnc_api*
 %{python3_sitelib}/contrail_api_client*
 %config(noreplace) %{_contrailetc}/vnc_api_lib.ini
