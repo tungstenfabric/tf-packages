@@ -1048,8 +1048,27 @@ Summary:            Contrail Python3 Lib
 
 Group:             Applications/System
 Obsoletes:         contrail-api-lib <= 0.0.1
-Requires:          python-simplejson
-Requires:          python-six
+
+# most of packages in rhel-8 repos for rhel
+# and in epel with name like python36 for centos
+#Requires:          python3-future
+#Requires:          python3-six
+#Requires:          python3-simplejson
+#Requires:          python3-kombu
+#Requires:          python3-bottle >= 0.11.6
+#%if 0%{?rhel} >= 7
+#Requires:          python3-gevent >= 1.0
+#%endif
+#%if 0%{?rhel}
+#Requires:          consistent_hash
+#%else
+#Requires:          python-consistent_hash
+#%endif
+#Requires:          python3-fysom
+#Requires:          python3-greenlet
+#Requires:          python3-stevedore
+#Requires:          python3-pycassa
+#Requires:          python3-attrdict
 
 %description -n python3-contrail
 Contrail common python package
@@ -1062,6 +1081,10 @@ and common api server libraries.
 # should be packaged as needed.
 %{python3_sitelib}/cfgm_common*
 %{python3_sitelib}/contrail_config_common*
+%{python3_sitelib}/libpartition*
+%{python3_sitelib}/pysandesh*
+%{python3_sitelib}/sandesh-0.1*dev*
+%{python3_sitelib}/sandesh_common*
 %{python3_sitelib}/vnc_api*
 %{python3_sitelib}/contrail_api_client*
 %config(noreplace) %{_contrailetc}/vnc_api_lib.ini
