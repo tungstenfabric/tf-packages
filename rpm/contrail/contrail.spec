@@ -883,6 +883,10 @@ Requires:    python-gevent
 Requires:    python2-requests >= 2.20.0
 Requires:    python2-future
 Requires:    python-configparser
+Requires:    python-kazoo
+Requires:    python-eventlet < 0.19.0
+Requires:    python-enum34
+Requires:    python-bitstring
 
 %description kube-manager
 Contrail kubernetes network manager package
@@ -912,11 +916,14 @@ Summary:            Mesos network manager
 
 Group:              Applications/System
 
-Requires:           python-contrail >= %{_verstr}-%{_relstr}
-Requires:           python-gevent
-Requires:           python2-requests >= 2.20.0
-Requires:           python2-future
-Requires:           python-configparser
+Requires:    python-contrail >= %{_verstr}-%{_relstr}
+Requires:    python-gevent
+Requires:    python2-requests >= 2.20.0
+Requires:    python2-future
+Requires:    python-configparser
+Requires:    python-kazoo
+Requires:    python-eventlet < 0.19.0
+Requires:    python-enum34
 
 %description mesos-manager
 Contrail Mesos network manager package
@@ -1022,6 +1029,7 @@ Requires:          python-six
 Requires:          python-stevedore
 Requires:          python-pycassa
 Requires:          python-attrdict
+Requires:          python-bitarray
 
 %description -n python-contrail
 Contrail Virtual Router utils package
@@ -1069,6 +1077,7 @@ Obsoletes:         contrail-api-lib <= 0.0.1
 #Requires:          python3-stevedore
 #Requires:          python3-pycassa
 #Requires:          python3-attrdict
+#Requires:          python-bitarray
 
 %description -n python3-contrail
 Contrail common python package
