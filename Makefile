@@ -58,15 +58,18 @@ all: dep rpm
 	@echo $(PACKAGES)
 	@echo $(DEPENDENCIES)
 
-.PHONY: all rpm dep testdeps-rpms
+.PHONY: all rpm dep kernel-deps testdeps-rpms
 
-dep: $(DEPENDENCIES)
+dep: $(DEPENDENCIES) kernel-deps
 rpm: $(PACKAGES) testdeps-rpms
 
 dep-%:
 	$(eval SPECFILE = $(filter %/$(patsubst dep-%,%.spec,$@), $(SPEC_FILES)))
 	@echo Installing dependencies for $(SPECFILE)...
 	@yum-builddep $(DEPBUILD_FLAGS) -q -y $(SPECFILE)
+
+kernel-deps:
+	$(MKFILE_DIR)utils/install_kernels.sh
 
 testdeps-rpms:
 ifeq ($(CONTRAIL_BUILD_FROM_SOURCE),true)
