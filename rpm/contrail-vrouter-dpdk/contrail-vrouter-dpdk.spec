@@ -135,7 +135,6 @@ install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/dpdkinfo %{buildroo
 %{_bindir}/contrail-vrouter-dpdk
 %{_bindir}/dpdkinfo
 
-
 %changelog
 * Thu Feb 16 2017 Nagendra Maynattamai <npchandran@juniper.net> 4.1.1-2.1contrail1
 - Initial Build. Rebuilt with patches for Opencontrail
