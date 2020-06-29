@@ -129,12 +129,21 @@ popd
 install -d -m 755 %{buildroot}/%{_bindir}
 install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/dpdk/contrail-vrouter-dpdk %{buildroot}/%{_bindir}/contrail-vrouter-dpdk
 install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/dpdkinfo %{buildroot}/%{_bindir}/dpdkinfo
+install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/sandump/wireshark_plugin/main.lua %{buildroot}/usr/local/lib64/wireshark/plugins/main.lua
+install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/sandump/wireshark_plugin/. %{buildroot}/usr/share/lua/5.1/.
+install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/sandump/init.lua %{buildroot}/usr/local/share/wireshark/init.lua
+install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/sandump/sandump %{buildroot}/sandump
+install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/sandump/tshark3_2.tar %{buildroot}/tshark3_2.tar
 
 %files
 %defattr(-,root,root,-)
 %{_bindir}/contrail-vrouter-dpdk
 %{_bindir}/dpdkinfo
-
+/usr/local/lib64/wireshark/plugins/main.lua
+/usr/share/lua/5.1/.
+/usr/local/share/wireshark/init.lua
+/sandump
+/tshark3_2.tar
 
 %changelog
 * Thu Feb 16 2017 Nagendra Maynattamai <npchandran@juniper.net> 4.1.1-2.1contrail1
