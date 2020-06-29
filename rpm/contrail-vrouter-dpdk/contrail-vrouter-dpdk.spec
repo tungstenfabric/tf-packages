@@ -133,7 +133,7 @@ install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/dpdkinfo %{buildroo
 %files
 %defattr(-,root,root,-)
 %{_bindir}/contrail-vrouter-dpdk
-%{_bindir}/dpdkinfo
+%{_bindir}/dp
 
 
 %changelog
