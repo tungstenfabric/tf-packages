@@ -128,12 +128,10 @@ popd
 # Install Directories
 install -d -m 755 %{buildroot}/%{_bindir}
 install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/dpdk/contrail-vrouter-dpdk %{buildroot}/%{_bindir}/contrail-vrouter-dpdk
-install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/dpdkinfo %{buildroot}/%{_bindir}/dpdkinfo
 
 %files
 %defattr(-,root,root,-)
 %{_bindir}/contrail-vrouter-dpdk
-%{_bindir}/dpdkinfo
 
 
 %changelog

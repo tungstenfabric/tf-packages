@@ -121,11 +121,7 @@ pushd %{_sbtop}
 scons --opt=%{_sconsOpt} --root=%{buildroot} --without-dpdk install
 for kver in %{_kvers}; do
     echo "Kver = ${kver}"
-    set +e
-    ls /lib/modules/${kver}/build
-    exit_code=$?
-    set -e
-    if [ $exit_code == 0 ]; then
+    if ls /lib/modules/${kver}/build ; then
         sed 's/{kver}/%{_kver}/g' %{_distropkgdir}/dkms.conf.in.tmpl > %{_distropkgdir}/dkms.conf.in
         scons --opt=%{_sconsOpt} --kernel-dir=/lib/modules/${kver}/build build-kmodule --root=%{buildroot}
     else
@@ -134,6 +130,7 @@ for kver in %{_kvers}; do
 done
 mkdir -p %{buildroot}/_centos/tmp
 popd
+
 pushd %{buildroot}
 mkdir -p %{buildroot}/centos
 cp %{_distropkgdir}/dkms.conf.in %{buildroot}/centos/
@@ -145,6 +142,7 @@ install -p -m 755 %{buildroot}/_centos/tmp/contrail-vrouter*.tar.gz %{buildroot}
 rm %{buildroot}/_centos/tmp/contrail-vrouter*.tar.gz
 rm -rf %{buildroot}/_centos
 popd
+
 #Build nova-contrail-vif
 pushd %{_sbtop}
 scons --opt=%{_sconsOpt} -U nova-contrail-vif
@@ -186,6 +184,13 @@ for vrouter_ko in $(ls -1 %{buildroot}/lib/modules/*/extra/net/vrouter/vrouter.k
   install -d -m 755 %{buildroot}/%{_contrailutils}/../vrouter-kernel-modules/$kernel_ver/
   install -p -m 755 $vrouter_ko %{buildroot}/%{_contrailutils}/../vrouter-kernel-modules/$kernel_ver/vrouter.ko
 done
+
+# contrail-tools package
+install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/dpdkinfo %{buildroot}/usr/bin/dpdkinfo
+install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/sandump/wireshark_plugin/init.lua %{buildroot}/usr/local/share/wireshark/init.lua
+install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/sandump/wireshark_plugin/common.lua %{buildroot}/usr/share/lua/5.1/common.lua
+install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/sandump/wireshark_plugin/helpers.lua %{buildroot}/usr/share/lua/5.1/helpers.lua
+install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/utils/sandump/wireshark_plugin/main.lua %{buildroot}/usr/local/lib64/wireshark/plugins/main.lua
 
 #Needed for vrouter-dkms
 install -d -m 755 %{buildroot}/usr/src/vrouter-%{_verstr}
@@ -371,14 +376,51 @@ Contrail Virtual Router apis package
 %files -n python-contrail-vrouter-api
 %{python_sitelib}/contrail_vrouter_api*
 
+%package tools
+Summary: Contrail tools
+Group: Applications/System
+
+Requires: tcpdump
+
+%description tools
+Contrail tools package
+
+The package contrail-tools provides command line utilities to
+configure and diagnose the OpenContrail Linux kernel module and other stuff.
+It will be available in contrail-tools container
+
+%files tools
+%{_bindir}/dropstats
+%{_bindir}/flow
+%{_bindir}/mirror
+%{_bindir}/mpls
+%{_bindir}/nh
+%{_bindir}/rt
+%{_bindir}/vrfstats
+%{_bindir}/vif
+%{_bindir}/vxlan
+%{_bindir}/vrouter
+%{_bindir}/vrmemstats
+%{_bindir}/qosmap
+%{_bindir}/vifdump
+%{_bindir}/vrftable
+%{_bindir}/vrinfo
+%{_bindir}/dpdkinfo
+%{_bindir}/dpdkvifstats.py
+%{_bindir}/sandump
+/usr/share/lua/5.1/common.lua
+/usr/share/lua/5.1/helpers.lua
+/usr/local/share/wireshark/init.lua
+/usr/local/lib64/wireshark/plugins/main.lua
+
 %package vrouter-utils
 Summary:            Contrail vRouter
-
 Group:              Applications/System
 
 Requires:           tcpdump
 
 %description vrouter-utils
+WARNING! this package will be deprecated soon. Please use contrail-tools instead.
 Contrail Virtual Router utils package
 
 The OpenContrail vRouter is a forwarding plane (of a distributed router)that
@@ -1095,4 +1137,3 @@ and common api server libraries.
 %{python3_sitelib}/vnc_api*
 %{python3_sitelib}/contrail_api_client*
 %config(noreplace) %{_contrailetc}/vnc_api_lib.ini
-
