@@ -1,5 +1,4 @@
 %define         _contrailetc /etc/contrail
-%define         _contrailcontrol /opt/contrail/control-node
 %define         _distropkgdir %{_sbtop}tools/packages/rpm/%{name}
 
 %if 0%{?fedora} >= 17
@@ -73,11 +72,7 @@ Contrail Nodemgr package
 
 %build
 pushd %{_sbtop}/controller
-scons --opt=%{_sconsOpt} -U control-node:node_mgr
-scons --opt=%{_sconsOpt} -U vrouter:node_mgr
-scons --opt=%{_sconsOpt} -U opserver:node_mgr
-scons --opt=%{_sconsOpt} -U database:node_mgr
-scons --opt=%{_sconsOpt} -U src:nodemgr
+scons --opt=%{_sconsOpt} -U contrail-nodemgr
 
 if [ $? -ne 0 ] ; then
   echo "build failed"
@@ -99,59 +94,19 @@ install -d -m 755 %{buildroot}%{_bindir}
 install -d -m 755 %{buildroot}
 
 popd
+
 mkdir -p build/python_dist
-pushd build/python_dist
-
-tar zxf %{_build_dist}/control-node/dist/Control-Node-0.1dev.tar.gz
-pushd Control-Node-0.1dev
-%{__python} setup.py install --root=%{buildroot} --no-compile
-install -d -m 755 %{buildroot}/usr/share/doc/python-Control-Node
-if [ -d doc ]; then
-  cp -R doc/* %{buildroot}/usr/share/doc/python-Control-Node
-fi
-popd
-
-tar zxf %{_build_dist}/vnsw/agent/uve/dist/vrouter-0.1dev.tar.gz
-pushd vrouter-0.1dev
-%{__python} setup.py install --root=%{buildroot} --no-compile
-install -d -m 755 %{buildroot}/usr/share/doc/python-vrouter
-if [ -d doc ]; then
-  cp -R doc/* %{buildroot}/usr/share/doc/python-vrouter
-fi
-popd
-
-tar zxf %{_build_dist}/opserver/node_mgr/dist/node_mgr-0.1dev.tar.gz
-pushd node_mgr-0.1dev
-%{__python} setup.py install --root=%{buildroot} --no-compile
-popd
+cd build/python_dist
 
 tar zxf %{_build_dist}/nodemgr/dist/nodemgr-0.1dev.tar.gz
 pushd nodemgr-0.1dev
 %{__python} setup.py install --root=%{buildroot} --no-compile
 popd
 
-tar zxvf %{_build_dist}/analytics/database/dist/database-0.1dev.tar.gz
-pushd database-0.1dev
-%{__python} setup.py install --root=%{buildroot} --no-compile
-popd
-
 %files
 %defattr(-,root,root,-)
 %{_bindir}/contrail-nodemgr
-%{python_sitelib}/Control_Node*
-%{python_sitelib}/control_node*
-%{python_sitelib}/vrouter
-%{python_sitelib}/vrouter-*
-%{python_sitelib}/node_mgr-*
-%{python_sitelib}/database
-%{python_sitelib}/database-*
-%{python_sitelib}/analytics
 %{python_sitelib}/nodemgr
 %{python_sitelib}/nodemgr-*
-
-%post
-if [ -x /bin/systemctl ]; then
-/bin/systemctl --system daemon-reload
-fi
 
 %changelog
