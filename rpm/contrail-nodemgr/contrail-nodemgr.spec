@@ -130,11 +130,6 @@ pushd nodemgr-0.1dev
 %{__python} setup.py install --root=%{buildroot} --no-compile
 popd
 
-tar zxvf %{_build_dist}/analytics/database/dist/database-0.1dev.tar.gz
-pushd database-0.1dev
-%{__python} setup.py install --root=%{buildroot} --no-compile
-popd
-
 %files
 %defattr(-,root,root,-)
 %{_bindir}/contrail-nodemgr
