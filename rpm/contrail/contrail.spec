@@ -1028,6 +1028,7 @@ Requires:          python-stevedore
 Requires:          python-pycassa
 Requires:          python-attrdict
 Requires:          python-bitarray
+Requires:          python-zipp
 
 %description -n python-contrail
 Contrail Virtual Router utils package
