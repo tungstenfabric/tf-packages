@@ -16,6 +16,24 @@
       "revId": "f95588875de7d71e66a08d6c5884a7a36272d237",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5215e52_4f5e1e54",
+        "filename": "rpm/contrail/contrail.spec",
+        "patchSetId": 4
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 382
+      },
+      "writtenOn": "2020-07-20T18:05:34Z",
+      "side": 1,
+      "message": "ok, please let me know what else should be added here. now I\u0027ve just copy all things from vrouter-utils and added new files for sandump",
+      "parentUuid": "d65cf83d_3ebe05e0",
+      "revId": "f95588875de7d71e66a08d6c5884a7a36272d237",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
     }
   ]
 }
