@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d65cf83d_3ebe05e0",
+        "filename": "rpm/contrail/contrail.spec",
+        "patchSetId": 4
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 232
+      },
+      "writtenOn": "2020-07-20T18:02:23Z",
+      "side": 1,
+      "message": "dpdkinfo tool is missing here",
+      "revId": "f95588875de7d71e66a08d6c5884a7a36272d237",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
