@@ -70,6 +70,24 @@
       "revId": "f95588875de7d71e66a08d6c5884a7a36272d237",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c83762ac_6f0f13b4",
+        "filename": "rpm/contrail/contrail.spec",
+        "patchSetId": 4
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 382
+      },
+      "writtenOn": "2020-07-21T06:23:56Z",
+      "side": 1,
+      "message": "it\u0027s up to you - i can can remove it there.",
+      "parentUuid": "a4882f4e_cc8f3268",
+      "revId": "f95588875de7d71e66a08d6c5884a7a36272d237",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
     }
   ]
 }
