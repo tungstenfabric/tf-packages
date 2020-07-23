@@ -32,7 +32,7 @@ BuildRequires: scons
 
 Requires: python-contrail
 Requires: python-gevent
-Requires: python2-pyvmomi
+Requires: python2-pyvmomi = 6.5
 Requires: python-kazoo
 Requires: python-kombu
 Requires: python-bitarray
