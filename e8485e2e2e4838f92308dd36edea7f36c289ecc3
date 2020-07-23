@@ -22,6 +22,30 @@
       "revId": "e8485e2e2e4838f92308dd36edea7f36c289ecc3",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b9a564b7_de225589",
+        "filename": "rpm/contrail-vcenter-fabric-manager/contrail-vcenter-fabric-manager.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 582
+      },
+      "writtenOn": "2020-07-23T11:54:06Z",
+      "side": 1,
+      "message": "When I tried installing it manually with yum, this was the only package that went through. I\u0027ve also tried:\npython-pyvmomi-6.7.3 - not found\npython-pyvmomi - just installs python2-pyvmomi in latest version\npython36-pyvmomi - this forces the python3 version; and finally\npython36-pyvmomi-6.7.3 - this one actually worked.\n\nIs there some difference in the way packages are indexed, etc. in yum vs specfiles?",
+      "parentUuid": "0ba64b88_a0d435ca",
+      "range": {
+        "startLine": 35,
+        "startChar": 10,
+        "endLine": 35,
+        "endChar": 18
+      },
+      "revId": "e8485e2e2e4838f92308dd36edea7f36c289ecc3",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
     }
   ]
 }
