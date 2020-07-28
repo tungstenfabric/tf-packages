@@ -377,6 +377,8 @@ Summary: Contrail tools
 Group: Applications/System
 
 Requires: tcpdump
+Requires: wireshark
+Requires: sockat
 
 %description tools
 Contrail tools package
