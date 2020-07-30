@@ -404,10 +404,9 @@ It will be available in contrail-tools container
 %{_bindir}/dpdkinfo
 %{_bindir}/dpdkvifstats.py
 %{_bindir}/sandump
-/usr/share/lua/5.1/common.lua
-/usr/share/lua/5.1/helpers.lua
 /usr/local/share/wireshark/init.lua
 /usr/local/lib64/wireshark/plugins/main.lua
+/usr/share/lua/5.1
 
 %package vrouter-utils
 Summary:            Contrail vRouter
