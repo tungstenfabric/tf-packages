@@ -81,6 +81,7 @@ BuildRequires: python2-pip
 BuildRequires: python3-pip
 %endif
 Requires: liburcu2
+Requires: userspace-rcu = 0.10.0-3.el7
 Requires: libnl3
 Requires: numactl-libs
 Requires: contrail-vrouter-utils >= %{_verstr}-%{_relstr}
