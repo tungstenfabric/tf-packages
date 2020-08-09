@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e3c06429_6896c9fc",
+        "filename": "utils/install_kernels.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 382
+      },
+      "writtenOn": "2020-08-09T16:51:23Z",
+      "side": 1,
+      "message": "it would be good to have similar names...\npassing \"repositores\" to \"opts\" makes code complicated.",
+      "revId": "b182082ec714a8516c4ed26060e4904f2631b811",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
