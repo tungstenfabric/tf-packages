@@ -16,6 +16,24 @@
       "revId": "b182082ec714a8516c4ed26060e4904f2631b811",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ad69ae7_1297108a",
+        "filename": "utils/install_kernels.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 471
+      },
+      "writtenOn": "2020-08-09T18:28:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3c06429_6896c9fc",
+      "revId": "b182082ec714a8516c4ed26060e4904f2631b811",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
     }
   ]
 }
