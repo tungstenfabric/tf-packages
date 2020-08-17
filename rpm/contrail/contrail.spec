@@ -406,6 +406,7 @@ It will be available in contrail-tools container
 %{_bindir}/dpdkinfo
 %{_bindir}/dpdkvifstats.py
 %{_bindir}/sandump
+%{_bindir}/pkt_droplog.py
 /usr/local/share/wireshark/init.lua
 /usr/local/lib64/wireshark/plugins/main.lua
 /usr/share/lua/5.1
