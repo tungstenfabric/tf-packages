@@ -409,6 +409,7 @@ It will be available in contrail-tools container
 /usr/local/share/wireshark/init.lua
 /usr/local/lib64/wireshark/plugins/main.lua
 /usr/share/lua/5.1
+/usr/local/lib64/wireshark/plugins/agent_hdr.lua
 
 %package vrouter-utils
 Summary:            Contrail vRouter
