@@ -659,6 +659,7 @@ Requires:           python2-crypto
 Requires:           python-crypto
 %endif
 Requires:           python-pyroute2
+Requires:           python-cassandra-driver >= 3.0.0
 
 %description config
 Contrail Config package
