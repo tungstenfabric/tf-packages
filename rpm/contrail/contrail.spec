@@ -624,7 +624,6 @@ Requires: python-gevent >= 1.0
 Requires:          python-gevent
 %endif
 Requires:           python-lxml >= 2.3.2
-Requires:           python-pycassa
 Requires:           python-thrift >= 0.9.1
 Requires:           python-psutil >= 0.6.0
 Requires:           python2-requests >= 2.20.0
@@ -1069,6 +1068,7 @@ Requires:          python-stevedore
 Requires:          python-pycassa
 Requires:          python-attrdict
 Requires:          python-bitarray
+Requires:          python-cassandra-driver >= 3.0.0
 
 %description -n python-contrail
 Contrail Virtual Router utils package
