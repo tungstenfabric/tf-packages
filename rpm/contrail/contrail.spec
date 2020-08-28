@@ -1069,6 +1069,7 @@ Requires:          python-stevedore
 Requires:          python-pycassa
 Requires:          python-attrdict
 Requires:          python-bitarray
+Requires:          python-cassandra-driver >= 3.0.0
 
 %description -n python-contrail
 Contrail Virtual Router utils package
