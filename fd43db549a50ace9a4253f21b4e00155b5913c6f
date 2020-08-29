@@ -16,6 +16,24 @@
       "revId": "fd43db549a50ace9a4253f21b4e00155b5913c6f",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98a01de9_12da3778",
+        "filename": "rpm/contrail/contrail.spec",
+        "patchSetId": 3
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 382
+      },
+      "writtenOn": "2020-08-29T16:39:48Z",
+      "side": 0,
+      "message": "looks like confog-api still have explicit imports from pycassa and thrift. let me revert this for now.",
+      "parentUuid": "6dec3c26_36971cac",
+      "revId": "fd43db549a50ace9a4253f21b4e00155b5913c6f",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
     }
   ]
 }
