@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6dec3c26_36971cac",
+        "filename": "rpm/contrail/contrail.spec",
+        "patchSetId": 3
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 40
+      },
+      "writtenOn": "2020-08-29T08:56:52Z",
+      "side": 0,
+      "message": "If we don\u0027t need python-pycassa here, I guess we also don\u0027t need python-thrift either. Don\u0027t you think?",
+      "revId": "fd43db549a50ace9a4253f21b4e00155b5913c6f",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
