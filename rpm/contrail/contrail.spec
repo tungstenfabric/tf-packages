@@ -443,7 +443,6 @@ configure and diagnose the OpenContrail Linux kernel module.
 %{_bindir}/qosmap
 %{_bindir}/vifdump
 %{_bindir}/vrftable
-%{_bindir}/vrinfo
 %{_bindir}/dpdkvifstats.py
 
 %package vrouter-agent
