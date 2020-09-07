@@ -5,11 +5,15 @@ my_dir="$(dirname $my_file)"
 
 
 if [[ "${MULTI_KERNEL_BUILD,,}" == 'true' ]]; then
-    source /etc/os-release
-    [[ "$ID" == 'rhel' ]] && os_suffix=".rhel"
+    if [[ "${LINUX_DISTR}" =~ 'ubi' ]] ; then
+        os_suffix='.ubi'
+    else
+        source /etc/os-release
+        [[ "$ID" == 'rhel' ]] && os_suffix=".rhel"
+    fi
     kvers=$(cat $my_dir/../kernel_version${os_suffix}.info)
 else
-    running_kver=$(uname -r) 
+    running_kver=$(uname -r)
     if [[ -d "/lib/modules/${running_kver}/build" ]]; then
         # Running kernel's sources are available
         kvers=${running_kver}
