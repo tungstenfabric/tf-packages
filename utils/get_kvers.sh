@@ -5,9 +5,7 @@ my_dir="$(dirname $my_file)"
 
 
 if [[ "${MULTI_KERNEL_BUILD,,}" == 'true' ]]; then
-    source /etc/os-release
-    [[ "$ID" == 'rhel' ]] && os_suffix=".rhel"
-    kvers=$(cat $my_dir/../kernel_version${os_suffix}.info)
+    kvers=$(sed '/^#/d' $my_dir/../kernel_version.ubi.info)
 else
     running_kver=$(uname -r) 
     if [[ -d "/lib/modules/${running_kver}/build" ]]; then
