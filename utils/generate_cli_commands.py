@@ -164,7 +164,7 @@ class ContrailCliGenerator(object):
                         'contrail-analytics-api' :    'contrail_analytics_cli',
                         'contrail-collector' :        'contrail_analytics_cli',
                         'contrail-query-engine' :     'contrail_analytics_cli',
-                        'contrail-snmp-collector' :   'contrail_analytics_cli',
+                        'tf-snmp-collector' :   'contrail_analytics_cli',
                         'contrail-topology' :         'contrail_analytics_cli',
                         'tf-broadview' :              'contrail_analytics_cli',
                         'contrail-api' :              'contrail_config_cli',
