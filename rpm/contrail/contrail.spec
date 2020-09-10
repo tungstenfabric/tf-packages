@@ -73,7 +73,7 @@ BuildRequires: python36-requests
 BuildRequires: python3-lxml
 %endif
 BuildRequires: libcurl-devel
-BuildRequires: librdkafka-devel < 0.11.5
+BuildRequires: librdkafka-devel <= 1.5.0
 BuildRequires: libstdc++-devel
 BuildRequires: libtool
 BuildRequires: libxml2-devel
@@ -746,7 +746,7 @@ Requires:           protobuf
 Requires:           cassandra-cpp-driver
 Requires:           libzookeeper
 Requires:           net-snmp-python
-Requires:           librdkafka1 < 0.11.5
+Requires:           librdkafka1 <= 1.5.0
 Requires:           python-kafka >= 1.4.0
 Requires:           python-stevedore
 Requires:           python-kazoo >= 2.3.0
