@@ -749,7 +749,7 @@ Requires:           librdkafka1 < 0.11.5
 Requires:           python-kafka >= 1.4.0
 Requires:           python-stevedore
 Requires:           python-kazoo >= 2.3.0
-Requires:           python-sseclient
+Requires:           python-sseclient >= 0.0.26
 Requires:           python-amqp
 Requires:           grok
 Requires:           python2-future
