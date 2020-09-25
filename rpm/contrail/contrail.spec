@@ -785,7 +785,6 @@ This information includes statistics,logs, events, and errors.
 %attr(755, root, root) %{_bindir}/contrail-alarm-gen*
 %{python_sitelib}/opserver*
 %{python_sitelib}/contrail_snmp_collector*
-%{python_sitelib}/contrail_topology*
 %{python_sitelib}/tf_topology*
 %{python_sitelib}/ContrailAnalyticsCli*
 %{_bindir}/contrail-logs
@@ -796,7 +795,6 @@ This information includes statistics,logs, events, and errors.
 %{_bindir}/contrail-alarm-notify
 %{_bindir}/contrail-logs-api-audit
 %attr(755, root, root) %{_bindir}/contrail-snmp-*
-%attr(755, root, root) %{_bindir}/contrail-topology
 %attr(755, root, root) %{_bindir}/tf-topology
 /usr/share/doc/contrail-analytics-api
 /usr/share/mibs/netsnmp
