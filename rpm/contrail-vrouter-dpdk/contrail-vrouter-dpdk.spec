@@ -129,11 +129,12 @@ popd
 # Install Directories
 install -d -m 755 %{buildroot}/%{_bindir}
 install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/dpdk/contrail-vrouter-dpdk %{buildroot}/%{_bindir}/contrail-vrouter-dpdk
+install -p -m 755 %{_sbtop}/vrouter/utils/dpdk_ddp/mplsogreudp.pkg %{buildroot}/%{_bindir}/mplsogreudp.pkg
 
 %files
 %defattr(-,root,root,-)
 %{_bindir}/contrail-vrouter-dpdk
-
+%{_bindir}/mplsogreudp.pkg
 
 %changelog
 * Thu Feb 16 2017 Nagendra Maynattamai <npchandran@juniper.net> 4.1.1-2.1contrail1
