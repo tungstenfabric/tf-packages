@@ -658,7 +658,8 @@ Requires:           python2-crypto
 Requires:           python-crypto
 %endif
 Requires:           python-pyroute2
-
+Requires:           uwsgi >= 2.0.18
+Requires:           openssl-devel
 %description config
 Contrail Config package
 
