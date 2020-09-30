@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cec8221c_f95b07c7",
+        "filename": "rpm/contrail-vrouter-dpdk/contrail-vrouter-dpdk.spec",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-09-30T19:40:03Z",
+      "side": 1,
+      "message": "/var/run is usually bind from host in containerized deployments, so this file would not been seen.",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 32
+      },
+      "revId": "b71a6f0e6adc54f888480f247d685639dbf5719e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
