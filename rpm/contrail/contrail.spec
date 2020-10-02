@@ -631,7 +631,7 @@ Requires:           python-zope-interface
 Requires:           xmltodict >= 0.7.0
 Requires:           python-jsonpickle
 Requires:           python-amqp
-Requires:           python-kazoo >= 2.3.0
+Requires:           python-kazoo == 2.7.0
 Requires:           python-ncclient >= 0.3.2
 %if 0%{?rhel}
 Requires:           python-pysnmp
