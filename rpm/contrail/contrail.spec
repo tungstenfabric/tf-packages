@@ -404,6 +404,7 @@ It will be available in contrail-tools container
 %{_bindir}/vrftable
 %{_bindir}/vrinfo
 %{_bindir}/dpdkinfo
+%{_bindir}/dpdkconf
 %{_bindir}/dpdkvifstats.py
 %{_bindir}/sandump
 %{_bindir}/pkt_droplog.py
