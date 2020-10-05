@@ -27,7 +27,6 @@ URL:     http://www.juniper.net/
 Vendor:  Juniper Networks Inc
 
 Requires: contrail-vrouter-dpdk >= %{_verstr}-%{_relstr}
-Requires: contrail-vrouter-utils >= %{_verstr}-%{_relstr}
 Requires: contrail-vrouter-agent >= %{_verstr}-%{_relstr}
 Requires: python-contrail-vrouter-api >= %{_verstr}-%{_relstr}
 

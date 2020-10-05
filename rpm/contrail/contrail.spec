@@ -413,37 +413,14 @@ It will be available in contrail-tools container
 /usr/local/lib64/wireshark/plugins/agent_hdr.lua
 
 %package vrouter-utils
-Summary:            Contrail vRouter
-Group:              Applications/System
-
-Requires:           tcpdump
+Summary: Contrail vRouter host tools
+Group: Applications/System
 
 %description vrouter-utils
-WARNING! this package will be deprecated soon. Please use contrail-tools instead.
-Contrail Virtual Router utils package
-
-The OpenContrail vRouter is a forwarding plane (of a distributed router)that
-runs in the hypervisor of a virtualized server.
-
-The package opencontrail-vrouter-utils provides command line utilities to
-configure and diagnose the OpenContrail Linux kernel module.
+Contrail vrouter utils contains only vif utility that should be copied to host.
 
 %files vrouter-utils
-%{_bindir}/dropstats
-%{_bindir}/flow
-%{_bindir}/mirror
-%{_bindir}/mpls
-%{_bindir}/nh
-%{_bindir}/rt
-%{_bindir}/vrfstats
 %{_bindir}/vif
-%{_bindir}/vxlan
-%{_bindir}/vrouter
-%{_bindir}/vrmemstats
-%{_bindir}/qosmap
-%{_bindir}/vifdump
-%{_bindir}/vrftable
-%{_bindir}/dpdkvifstats.py
 
 %package vrouter-agent
 
