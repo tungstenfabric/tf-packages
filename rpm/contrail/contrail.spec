@@ -638,6 +638,8 @@ Requires:           python-crypto
 Requires:           python-pyroute2
 Requires:           openssl-devel
 Requires:           uwsgi
+Requires:           uwsgi-plugin-python2 >= 2.0.18
+Requires:           uwsgi-plugin-python2-gevent >= 2.0.18
 %description config
 Contrail Config package
 
