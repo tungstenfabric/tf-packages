@@ -109,6 +109,12 @@ scons -c \
     --opt=%{_sconsOpt} \
     %{_dpdk_args} \
     --root=%{_builddir} \
+    --add-opts=checkWiresharkPlugins \
+    vrouter/dpdk
+scons -c \
+    --opt=%{_sconsOpt} \
+    %{_dpdk_args} \
+    --root=%{_builddir} \
     --add-opts=%{_sconsAddOpts} \
     vrouter/dpdk
 popd
