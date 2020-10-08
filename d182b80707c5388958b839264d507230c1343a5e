@@ -22,6 +22,30 @@
       "revId": "d182b80707c5388958b839264d507230c1343a5e",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97673f89_1bc6da37",
+        "filename": "rpm/contrail-vrouter-dpdk/contrail-vrouter-dpdk.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 643
+      },
+      "writtenOn": "2020-10-08T06:48:17Z",
+      "side": 1,
+      "message": "With multiple --add-opts, scons is not running checkwireshark plugin script,so created two scons commands. \n\"scons --add-opts\u003dcheckWiresharkPlugins --add-opts\u003dnone vrouter\" -\u003e Not working\n\"scons --add-opts\u003dcheckWiresharkPlugins vrouter\" -\u003e Working",
+      "parentUuid": "3a51c625_e6a559f1",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 25
+      },
+      "revId": "d182b80707c5388958b839264d507230c1343a5e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
     }
   ]
 }
