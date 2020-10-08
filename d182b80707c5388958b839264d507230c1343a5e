@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a51c625_e6a559f1",
+        "filename": "rpm/contrail-vrouter-dpdk/contrail-vrouter-dpdk.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 232
+      },
+      "writtenOn": "2020-10-08T05:38:58Z",
+      "side": 1,
+      "message": "why do we need 2 scons commands? can we just add that option in the existing scons command?",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 25
+      },
+      "revId": "d182b80707c5388958b839264d507230c1343a5e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
