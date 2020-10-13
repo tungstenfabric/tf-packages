@@ -128,13 +128,13 @@ popd
 # Install Directories
 install -d -m 755 %{buildroot}/%{_bindir}
 install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/dpdk/contrail-vrouter-dpdk %{buildroot}/%{_bindir}/contrail-vrouter-dpdk
-install -d -m 755 %{buildroot}/var/lib/contrail/ddp/
-install -p -m 755 %{_sbtop}/vrouter/dpdk/ddp/mplsogreudp.pkg %{buildroot}/var/lib/contrail/ddp/mplsogreudp.pkg
+install -d -m 755 %{buildroot}/opt/contrail/ddp/
+install -p -m 755 %{_sbtop}/vrouter/dpdk/ddp/mplsogreudp.pkg %{buildroot}/opt/contrail/ddp/mplsogreudp.pkg
 
 %files
 %defattr(-,root,root,-)
 %{_bindir}/contrail-vrouter-dpdk
-/var/lib/contrail/ddp/mplsogreudp.pkg
+/opt/contrail/ddp/mplsogreudp.pkg
 
 %changelog
 * Thu Feb 16 2017 Nagendra Maynattamai <npchandran@juniper.net> 4.1.1-2.1contrail1
