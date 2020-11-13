@@ -68,7 +68,7 @@ BuildRequires: kernel-devel = 3.10.0-1062.el7
 %else
 BuildRequires: kernel = 3.10.0-1062.el7
 BuildRequires: kernel-devel = 3.10.0-1062.el7
-BuildRequires: python3-sphinx
+BuildRequires: python3-sphinx = 1.2.3-6.el7
 BuildRequires: python36-requests
 BuildRequires: python3-lxml
 %endif
@@ -91,7 +91,7 @@ BuildRequires: python-lxml
 BuildRequires: python-requests
 BuildRequires: python-setuptools
 BuildRequires: python3-setuptools
-BuildRequires: python-sphinx
+BuildRequires: python-sphinx = 1.1.3-11.el7
 BuildRequires: scons
 BuildRequires: systemd-units
 BuildRequires: tbb-devel
