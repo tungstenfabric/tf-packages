@@ -68,9 +68,6 @@ BuildRequires: kernel-devel = 3.10.0-1062.el7
 %else
 BuildRequires: kernel = 3.10.0-1062.el7
 BuildRequires: kernel-devel = 3.10.0-1062.el7
-BuildRequires: python3-sphinx
-BuildRequires: python36-requests
-BuildRequires: python3-lxml
 %endif
 BuildRequires: libcurl-devel
 BuildRequires: librdkafka-devel >= 1.5.0
