@@ -761,6 +761,7 @@ This information includes statistics,logs, events, and errors.
 %defattr(-,contrail,contrail,)
 %defattr(-, root, root)
 %attr(755, root, root) %{_bindir}/contrail-collector*
+%attr(755, root, root) %{_bindir}/tf-collector*
 %attr(755, root, root) %{_bindir}/contrail-query-engine*
 %attr(755, root, root) %{_bindir}/contrail-analytics-api*
 %attr(755, root, root) %{_bindir}/contrail-alarm-gen*
