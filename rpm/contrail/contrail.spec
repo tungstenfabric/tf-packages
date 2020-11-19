@@ -229,11 +229,6 @@ done
 popd
 # Install section of contrail-utils package - END
 
-# Install section of contrail-test package - Start
-cp -a %{_sbtop}/third_party/contrail-test %{buildroot}/contrail-test
-rm -rf %{buildroot}/contrail-test/.git*
-# Install section of contrail-test package - End
-
 # Install section of contrail-config package - Start
 install -d -m 755 %{buildroot}%{_fabricansible}
 install -p -m 755 %{buildroot}/usr/bin/fabric_ansible_playbooks*.tar.gz %{buildroot}%{_fabricansible}/
@@ -1007,17 +1002,6 @@ Used for Android repo code checkout of OpenContrail
 %endif
 
 %endif
-
-%package test
-Summary: Contrail Test
-Group: Applications/System
-
-%description test
-Source code of Contrail Test and Test CI
-
-%files test
-%defattr(-, root, root)
-/contrail-test
 
 %package -n python-contrail
 Summary:            Contrail Python Lib
