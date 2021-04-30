@@ -17,7 +17,7 @@ for kver in $kvers; do
     fi
     for package in $packages; do
         if ! rpm -q ${package}-${kver} 2>&1 > /dev/null ; then
-            sudo rpm -ivh --nodeps --noscripts $(repoquery $extra_repos --location ${package}-${kver})
+            sudo rpm -ivh --nodeps --noscripts --oldpackage $(repoquery $extra_repos --location ${package}-${kver})
         fi
     done
 done
