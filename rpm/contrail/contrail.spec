@@ -124,7 +124,7 @@ for kver in %{_kvers}; do
     if ls /lib/modules/${kver}/build ; then
         sed 's/{kver}/%{_kver}/g' %{_distropkgdir}/dkms.conf.in.tmpl > %{_distropkgdir}/dkms.conf.in
         scons --opt=%{_sconsOpt} --kernel-dir=/lib/modules/${kver}/build build-kmodule --root=%{buildroot}
-        scons -c build-kmodule
+        scons -c --opt=%{_sconsOpt} --kernel-dir=/lib/modules/${kver}/build build-kmodule --root=%{buildroot}
     else
         echo "WARNING: kernel-devel-$kver is not installed, Skipping building vrouter for $kver"
     fi
