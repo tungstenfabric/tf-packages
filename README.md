@@ -41,3 +41,7 @@ Build and packaging scripts for OpenContrail.
     5. `KVERS` - kernel version to build against (default: installed version of `kernel-devel`)
     6. `BUILDTAG` - additional tag for versioning (default: `date +%m%d%Y%H%M`)
     7. `SKUTAG` - OpenStack SKU (default: `ocata`)
+
+## Ubuntu kernel version support
+## Ubuntu kernels are supported via DKMS (Dynamic compile)
+## and hence will not be included in the kernel version file.
