@@ -80,6 +80,7 @@ BuildRequires: libpcap-devel
 BuildRequires: python2-pip
 BuildRequires: python3-pip
 %endif
+Requires: which
 Requires: liburcu2
 Requires: userspace-rcu = 0.10.0-3.el7
 Requires: libnl3
@@ -92,7 +93,6 @@ Requires: libibverbs = 47mlnx1-1.47329
 %else
 %define         _sconsAddOpts      none
 %endif
-
 
 %description
 Provides contrail-vrouter-dpdk binary
@@ -127,14 +127,17 @@ popd
 %install
 # Install Directories
 install -d -m 755 %{buildroot}/%{_bindir}
-install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/dpdk/contrail-vrouter-dpdk %{buildroot}/%{_bindir}/contrail-vrouter-dpdk
+install -p -m 755 %{_sbtop}build/%{_sconsOpt}/vrouter/dpdk/contrail-vrouter-dpdk %{buildroot}/%{_bindir}/contrail-vrouter-dpdk
 install -d -m 755 %{buildroot}/opt/contrail/ddp/
-install -p -m 755 %{_sbtop}/vrouter/dpdk/ddp/mplsogreudp.pkg %{buildroot}/opt/contrail/ddp/mplsogreudp.pkg
+install -p -m 755 %{_sbtop}vrouter/dpdk/ddp/mplsogreudp.pkg %{buildroot}/opt/contrail/ddp/mplsogreudp.pkg
+install -d -m 755 %{buildroot}/opt/contrail/bin/
+install -p -m 755 %{_sbtop}build/%{_sconsOpt}/vrouter/dpdk/dpdk-devbind.py %{buildroot}/opt/contrail/bin/dpdk_nic_bind.py
 
 %files
 %defattr(-,root,root,-)
 %{_bindir}/contrail-vrouter-dpdk
 /opt/contrail/ddp/mplsogreudp.pkg
+/opt/contrail/bin/dpdk_nic_bind.py
 
 %changelog
 * Thu Feb 16 2017 Nagendra Maynattamai <npchandran@juniper.net> 4.1.1-2.1contrail1
