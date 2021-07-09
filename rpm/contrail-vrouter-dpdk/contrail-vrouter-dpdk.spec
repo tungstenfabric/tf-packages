@@ -23,26 +23,17 @@
 %define         _sconsOpt      debug
 %endif
 
-%if 0%{?_kVers:1}
-%define         _kvers      %{_kVers}
-%else
-%define         _kvers      3.10.0-327.10.1.el7.x86_64
-%endif
-
 %if 0%{?_enableMellanox:1}
 %define         _enableMlx %{_enableMellanox}
 %else
 %define         _enableMlx FALSE
 %endif
 
-%define         _kernel_dir /lib/modules/%{_kVers}/build
-
 %if 0%{?_dpdk_build_dir:1}
 %define         _dpdk_args --dpdk-dir=%{_dpdk_build_dir}
 %else
 %define         _dpdk_args %{nil}
 %endif
-
 
 %bcond_without debuginfo
 
@@ -132,6 +123,8 @@ install -d -m 755 %{buildroot}/opt/contrail/ddp/
 install -p -m 755 %{_sbtop}vrouter/dpdk/ddp/mplsogreudp.pkg %{buildroot}/opt/contrail/ddp/mplsogreudp.pkg
 install -d -m 755 %{buildroot}/opt/contrail/bin/
 install -p -m 755 %{_sbtop}build/%{_sconsOpt}/vrouter/dpdk/dpdk-devbind.py %{buildroot}/opt/contrail/bin/dpdk_nic_bind.py
+# tools
+install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/dpdk/x86_64-native-linuxapp-gcc/app/testpmd %{buildroot}/usr/bin/testpmd
 
 %files
 %defattr(-,root,root,-)
@@ -142,3 +135,13 @@ install -p -m 755 %{_sbtop}build/%{_sconsOpt}/vrouter/dpdk/dpdk-devbind.py %{bui
 %changelog
 * Thu Feb 16 2017 Nagendra Maynattamai <npchandran@juniper.net> 4.1.1-2.1contrail1
 - Initial Build. Rebuilt with patches for Opencontrail
+
+%package tools
+Summary: Contrail tools for DPDK mode
+Group: Applications/System
+
+%description tools
+Contrail DPDK tools for debug purposes.
+
+%files tools
+%{_bindir}/testpmd
