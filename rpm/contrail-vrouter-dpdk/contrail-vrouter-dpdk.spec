@@ -49,15 +49,6 @@ Vendor:     Juniper Networks Inc
 
 BuildRequires: boost-devel
 BuildRequires: liburcu-devel
-# kernel is required for /lib/modules content
-%define is_rhel %(cat /etc/os-release | grep ^NAME | cut -d = -f 2 | sed  's/\"//g')
-%if "%{is_rhel}" == "Red Hat Enterprise Linux Server"
-BuildRequires: kernel = 3.10.0-1062.el7
-BuildRequires: kernel-devel = 3.10.0-1062.el7
-%else
-BuildRequires: kernel = 3.10.0-1062.el7
-BuildRequires: kernel-devel = 3.10.0-1062.el7
-%endif
 BuildRequires: numactl-devel
 BuildRequires: libnl3-devel
 BuildRequires: scons
