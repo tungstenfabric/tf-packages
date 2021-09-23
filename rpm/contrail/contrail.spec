@@ -418,6 +418,7 @@ Contrail vrouter utils contains only vif utility that should be copied to host.
 
 %files vrouter-utils
 %{_bindir}/vif
+%{_bindir}/qosmap
 
 %package vrouter-agent
 
