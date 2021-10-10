@@ -36,12 +36,17 @@ URL:              http://www.juniper.net/
 Vendor:           Juniper Networks Inc
 
 Requires:         contrail-lib >= %{_verstr}-%{_relstr}
-Requires:         python-bottle >= 0.11.6
 Requires:         python-contrail >= %{_verstr}-%{_relstr}
 Requires:         ntp
+%if 0%{?rhel} < 8
+Requires:         python-bottle >= 0.11.6
 Requires:         python-psutil
 Requires:         PyYAML
-Requires:         python-setuptools
+%else
+Requires:         python2-pyyaml
+%endif
+Requires:         python2-setuptools
+# tpc
 Requires:         python-configparser
 
 %if 0%{?rhel} && 0%{?rhel} <= 6
@@ -49,7 +54,7 @@ Requires:         python-importlib
 %endif
 
 BuildRequires: bison
-BuildRequires: boost-devel
+BuildRequires: boost-devel = 1.53.0
 BuildRequires: flex
 BuildRequires: gcc
 BuildRequires: gcc-c++
@@ -96,8 +101,10 @@ popd
 mkdir -p build/python_dist
 cd build/python_dist
 
-tar zxf %{_build_dist}/nodemgr/dist/nodemgr-0.1dev.tar.gz
-pushd nodemgr-0.1dev
+last=$(ls -1 --sort=v -r %{_build_dist}/nodemgr/dist/*.tar.gz | head -n 1| xargs -i basename {})
+echo "DBG: %{_build_dist}/nodemgr/dist/ last tar.gz = $last"
+tar zxf %{_build_dist}/nodemgr/dist/$last
+pushd ${last//\.tar\.gz/}
 %{__python} setup.py install --root=%{buildroot} --no-compile
 popd
 
@@ -106,5 +113,13 @@ popd
 %{_bindir}/contrail-nodemgr
 %{python_sitelib}/nodemgr
 %{python_sitelib}/nodemgr-*
+
+%if 0%{?rhel} >= 8
+%post
+set -e
+python2 -m pip install \
+  "bottle >= 0.11.6" \
+  psutil
+%endif
 
 %changelog

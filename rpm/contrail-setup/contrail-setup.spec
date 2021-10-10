@@ -36,12 +36,17 @@ URL:          http://www.juniper.net/
 Vendor:       Juniper Networks Inc
 
 Requires:      tar
-Requires:      python-netifaces
 Requires:      gcc
+%if 0%{?rhel} < 8
+Requires:      python-netifaces
 Requires:      python-devel
 Requires:      python-netaddr
+Requires:      python-argparse
 Requires:      openstack-utils
-Requires:     crudini
+%else
+Requires:      python2-devel
+%endif
+Requires:      crudini
 %if 0%{?fedora} >= 17
 #Requires:      python-Fabric
 Requires:      python-crypto
@@ -50,7 +55,6 @@ Requires:      python-crypto
 Requires:     python-pycrypto
 %endif
 %if 0%{?rhel}
-Requires:      python-argparse
 Requires:      gdb
 %endif
 %if 0%{?rhel} > 6
@@ -69,7 +73,7 @@ Contrail Setup package with scripts for provisioning
 %if 0%{?_pre_cleanup:1}
 rm -rf %{buildroot}
 %endif
-    
+
 %build
 
 pushd %{_sbtop}/controller/src/config
@@ -81,7 +85,6 @@ tar cvfz %{_builddir}/dns_scripts.tgz *
 popd
 
 %install
-
 # Setup directories
 install -d -m 755 %{buildroot}%{_contrailopt}
 install -d -m 755 %{buildroot}%{_contrailopt}
@@ -89,21 +92,25 @@ install -d -m 755 %{buildroot}%{_contrailopt}/bin
 install -d -m 777 %{buildroot}%{_localstatedir}/log/contrail
 install -d -m 755 %{buildroot}%{_contrailopt}/contrail_packages
 install -d -m 755 %{buildroot}%{_contrailopt}/python_packages
-
 # install files
 pushd %{_sbtop}
 echo BUILDID=`echo %{_relstr} | cut -d "~" -f1` > %{buildroot}%{_contrailopt}/contrail_packages/VERSION
 install -p -m 755 %{_distropkgdir}/README %{buildroot}%{_contrailopt}/contrail_packages/README
 install -p -m 755 %{_distropkgdir}/contrail_ifrename.sh %{buildroot}%{_contrailopt}/bin/getifname.sh
 popd
-
 # install etc files
 install -p -m 644 %{_builddir}/cfgm_utils.tgz  %{buildroot}%{_contrailopt}/cfgm_utils.tgz
 install -p -m 644 %{_builddir}/dns_scripts.tgz  %{buildroot}%{_contrailopt}/dns_scripts.tgz
-
 install -d -m 755 %{buildroot}/etc/contrail
 
 %post
+set -e
+%if 0%{?rhel} >= 8
+python2 -m pip install \
+    argparse\
+    netaddr \
+    netifaces
+%endif
 cd %{_contrailopt}
 tar xzvf cfgm_utils.tgz
 tar xzvf dns_scripts.tgz -C utils

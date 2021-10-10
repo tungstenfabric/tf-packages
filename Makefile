@@ -16,19 +16,32 @@ SKUTAG       ?= ocata
 ENABLEMLX    ?= FALSE
 MANIFESTFILE ?= $(SB_TOP).repo/manifest.xml
 
+OS_DISTR      ?= $(shell cat /etc/os-release | grep '^ID=' | cut -d = -f 2 | sed  's/\"//g')
+OS_DISTR_VER  ?= $(shell cat /etc/os-release | grep '^VERSION_ID' | cut -d = -f 2 | tr -d '"')
+
 ifeq ($(CONTRAIL_BUILD_FROM_SOURCE),true)
 	RPMBUILD_MODE := -bi
 else
 	RPMBUILD_MODE := -bb
 endif
-RPMBUILD_FLAGS := --define "_sbtop $(SB_TOP)"
+
+RPMBUILD_FLAGS ?=
+DEPBUILD_FLAGS ?=
+ifeq ($(OS_DISTR), rhel)
+	ifeq ($(OS_DISTR_VER), 8.4)
+		RPMBUILD_FLAGS += --define "__python %__python2"
+		RPMBUILD_FLAGS += --define "__brp_mangle_shebangs %{nil}"
+		DEPBUILD_FLAGS += --define "__python %__python2"
+	endif
+endif
+
+RPMBUILD_FLAGS += --define "_sbtop $(SB_TOP)"
 RPMBUILD_FLAGS += --define "_topdir $(TOPDIR)"
 RPMBUILD_FLAGS += --define "_opt $(SCONSOPT)"
 RPMBUILD_FLAGS += --define "_kVers $(KVERS)"
 RPMBUILD_FLAGS += --define "_skuTag $(SKUTAG)"
 RPMBUILD_FLAGS += --define "_srcVer $(SRCVER)"
 RPMBUILD_FLAGS += --define "_buildTag $(BUILDTAG)"
-DEPBUILD_FLAGS :=
 
 ifdef DPDK_BUILD_DIR
 	RPMBUILD_FLAGS += --define "_dpdk_build_dir $(DPDK_BUILD_DIR)"
@@ -65,8 +78,8 @@ rpm: $(PACKAGES) testdeps-rpms
 
 dep-%:
 	$(eval SPECFILE = $(filter %/$(patsubst dep-%,%.spec,$@), $(SPEC_FILES)))
-	@echo Installing dependencies for $(SPECFILE)...
-	@yum-builddep $(DEPBUILD_FLAGS) -q -y $(SPECFILE)
+	@echo Installing dependencies for $(SPECFILE) DEPBUILD_FLAGS=$(DEPBUILD_FLAGS) ...
+	@yum-builddep $(DEPBUILD_FLAGS) -y $(SPECFILE)
 
 kernel-deps:
 ifeq ($(MULTI_KERNEL_BUILD),true)
@@ -83,6 +96,7 @@ rpm-contrail-tripleo-puppet:
 
 rpm-%:
 	$(eval SPECFILE = $(filter %/$(patsubst rpm-%,%.spec,$@), $(SPEC_FILES)))
+	echo RPM build for $(SPECFILE) RPMBUILD_MODE=$(RPMBUILD_MODE) RPMBUILD_FLAGS=$(RPMBUILD_FLAGS) ...
 	rpmbuild $(RPMBUILD_MODE) $(RPMBUILD_FLAGS) $(SPECFILE)
 
 # depends to enable -j x option for make

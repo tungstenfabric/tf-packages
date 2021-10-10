@@ -26,19 +26,24 @@ URL:        http://www.juniper.net/
 Vendor:     Juniper Networks Inc
 
 BuildArch: noarch
-BuildRequires: python-setuptools
+BuildRequires: python2-setuptools
 BuildRequires: python3-setuptools
+%if 0%{?rhel} < 8
 BuildRequires: scons
-
+%endif
 Requires: python-contrail
+%if 0%{?rhel} < 8
 Requires: python-gevent
-Requires: python2-pyvmomi = 6.7.3
-Requires: python-kazoo
 Requires: python-kombu
+%endif
+Requires: python2-future
+# tpc bin
 Requires: python-bitarray
+Requires: python2-pyvmomi = 6.7.3
+#tpc
+Requires: python-kazoo
 Requires: python-pycassa
 Requires: python-attrdict
-Requires: python2-future
 Requires: python-configparser
 
 %description
@@ -61,4 +66,10 @@ popd
 %exclude %{python_sitelib}/tests*
 
 %post
+set -e
+%if 0%{?rhel} >= 8
+python2 -m pip \
+  gevent \
+  kombu
+%endif
 mkdir -p /etc/contrail/contrail-vcenter-fabric-manager

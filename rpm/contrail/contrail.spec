@@ -46,53 +46,69 @@ License:        ASL 2.0
 URL:            www.opencontrail.org
 Vendor:         OpenContrail Project.
 
+# to avoid depends on /usr/bin/python
+AutoReqProv: no
+
 BuildRequires: autoconf
 BuildRequires: automake
 BuildRequires: bison
-BuildRequires: boost-devel
+# tpc
+BuildRequires: boost-devel = 1.53.0
 BuildRequires: cassandra-cpp-driver
 BuildRequires: cassandra-cpp-driver-devel
+#
 BuildRequires: cmake
 BuildRequires: cyrus-sasl-devel
 BuildRequires: flex
 BuildRequires: python2-future
 BuildRequires: gcc
 BuildRequires: gcc-c++
-BuildRequires: grok
 BuildRequires: grok-devel
 # kernel is required for /lib/modules content
 %define is_rhel %(cat /etc/os-release | grep ^NAME | cut -d = -f 2 | sed  's/\"//g')
-%if "%{is_rhel}" == "Red Hat Enterprise Linux Server"
+%if "%{is_rhel}" == "Red Hat Enterprise Linux" || "%{is_rhel}" == "Red Hat Enterprise Linux Server"
 BuildRequires: kernel = 3.10.0-1160.25.1.el7
 BuildRequires: kernel-devel = 3.10.0-1160.25.1.el7
 %else
 BuildRequires: kernel = 3.10.0-1160.25.1.el7
 BuildRequires: kernel-devel = 3.10.0-1160.25.1.el7
 BuildRequires: python3-sphinx
-BuildRequires: python36-requests
+BuildRequires: python3-requests
 BuildRequires: python3-lxml
 %endif
 BuildRequires: libcurl-devel
+# tpc
 BuildRequires: librdkafka-devel >= 1.5.0
+#
 BuildRequires: libstdc++-devel
 BuildRequires: libtool
 BuildRequires: libxml2-devel
 BuildRequires: libzookeeper-devel
 BuildRequires: lz4-devel
 BuildRequires: make
-BuildRequires: openssl
-BuildRequires: openssl-devel
+%if 0%{?rhel} < 8
+BuildRequires: openssl <= 1:1.0.2o
+BuildRequires: openssl-devel <= 1:1.0.2o
+%else
+BuildRequires: compat-openssl10 <= 1:1.0.2o
+BuildRequires: compat-openssl10-debugsource <= 1:1.0.2o
+%endif
 BuildRequires: protobuf
 BuildRequires: protobuf-compiler
 BuildRequires: protobuf-devel
-BuildRequires: python-devel
 BuildRequires: python3-devel
+%if 0%{?rhel} < 8
+BuildRequires: python-devel
 BuildRequires: python-lxml
-BuildRequires: python-requests
-BuildRequires: python-setuptools
-BuildRequires: python3-setuptools
 BuildRequires: python-sphinx
 BuildRequires: scons
+%else
+BuildRequires: python2-devel
+BuildRequires: python2-lxml
+%endif
+BuildRequires: python2-requests >= 2.20.0
+BuildRequires: python2-setuptools
+BuildRequires: python3-setuptools
 BuildRequires: systemd-units
 BuildRequires: tbb-devel
 BuildRequires: tokyocabinet-devel
@@ -245,15 +261,17 @@ cp %{_manifestFile} %{buildroot}/opt/contrail/manifest.xml
 
 %files
 
+
 %package vrouter
 Summary:            Contrail vRouter
 Group:              Applications/System
 
 Requires:           contrail-vrouter-agent >= %{_verstr}-%{_relstr}
 Requires:           contrail-lib >= %{_verstr}-%{_relstr}
-Requires:           xmltodict >= 0.7.0
 Requires:           python2-future
+# tpc
 Requires:           python-configparser
+Requires:           xmltodict >= 0.7.0
 
 %description vrouter
 vrouter kernel module
@@ -270,45 +288,11 @@ provides routing and higher layer services (hence vRouter instead of vSwitch).
 The package opencontrail-vrouter-dkms provides the OpenContrail Linux kernel
 module.
 
-%preun vrouter
-# Execute only during uninstall, skip during upgrade
-if [ $1 == 0 ]; then
-    if [ -L /lib/modules/$(uname -r)/extra/net/vrouter/vrouter.ko ]; then
-        echo "Removing symbolic link /lib/modules/$(uname -r)/extra/net/vrouter/vrouter.ko"
-        rm -f /lib/modules/$(uname -r)/extra/net/vrouter/vrouter.ko
-    fi
-else
-    echo "Skip removing /lib/modules/$(uname -r)/extra/net/vrouter/vrouter.ko for upgrade"
-fi
-exit 0
-
-%post vrouter
-act_kver=$(uname -r)
-kver=$(uname -r | cut -d "-" -f1)
-vrouter_actual_path=$(ls -1rt /lib/modules/${kver}*/extra/net/vrouter/vrouter.ko | tail -1)
-
-if [ -f "/lib/modules/$(uname -r)/extra/net/vrouter/vrouter.ko" ]; then
-    depmod -a
-    echo "Installed vrouter at /lib/modules/$(uname -r)/extra/net/vrouter/vrouter.ko"
-elif [ -f "$vrouter_actual_path" ]; then
-    echo "Create symbolic link to $vrouter_actual_path at /lib/modules/$(uname -r)/extra/net/vrouter/vrouter.ko"
-    mkdir -p /lib/modules/$(uname -r)/extra/net/vrouter/
-    ln -s "$vrouter_actual_path" /lib/modules/$(uname -r)/extra/net/vrouter/
-    if [ $? != 0 ]; then
-        echo "ERROR: Unable to create symlink to $vrouter_actual_path"
-        exit 126
-    fi
-    depmod -a
-else
-    echo "ERROR: vrouter module is not supported in current kernel version $(uname -r)"
-    exit 1
-fi
-exit 0
-
 %files vrouter
 %defattr(-, root, root)
 /lib/modules/*/extra/net/vrouter/vrouter.ko
 /opt/contrail/vrouter-kernel-modules/*/vrouter.ko
+
 
 %package vrouter-source
 Summary:            Contrail vRouter
@@ -332,19 +316,23 @@ module in source code format.
 %files vrouter-source
 /usr/src/modules/contrail-vrouter
 
+
 %package config-openstack
 Summary:            Config openstack
 
 Group:              Applications/System
 
 Requires:           contrail-config >= %{_verstr}-%{_relstr}
+%if 0%{?rhel} < 8
 Requires:           python-keystoneclient
 Requires:           python-novaclient
 Requires:           python-ironic-inspector-client
 Requires:           python-ironicclient
+%endif
 Requires:           python2-future
-Requires:           python-configparser
 Requires:           ipmitool
+# tpc
+Requires:           python-configparser
 
 %description config-openstack
 Contrail config openstack package
@@ -355,11 +343,23 @@ This package contains the configuration management modules that interface with O
 %attr(755, root, root) %{_bindir}/contrail-svc-monitor
 /usr/share/contrail
 
+%if 0%{?rhel} >= 8
+%post config-openstack
+set -e
+python2 -m pip install \
+  ironicclient \
+  ironic-inspector-client \
+  keystoneclient \
+  novaclient
+%endif
+
+
 %package -n python-contrail-vrouter-api
 Summary:            Contrail vrouter api
 
 Group:              Applications/System
 Requires:           python2-future
+# tpc
 Requires:           python-configparser
 
 %description -n python-contrail-vrouter-api
@@ -420,6 +420,7 @@ Contrail vrouter utils contains only vif utility that should be copied to host.
 %{_bindir}/vif
 %{_bindir}/qosmap
 
+
 %package vrouter-agent
 
 Summary:            Contrail vRouter
@@ -427,10 +428,13 @@ Summary:            Contrail vRouter
 Group:              Applications/System
 
 Requires:           contrail-lib >= %{_verstr}-%{_relstr}
+%if 0%{?rhel} < 8
 Requires:           python-paramiko
 Requires:           python2-passlib
+%endif
 Requires:           xmltodict >= 0.7.0
 Requires:           python2-future
+# tpc
 Requires:           python-configparser
 
 %description vrouter-agent
@@ -453,26 +457,14 @@ package provides the contrail-vrouter user space agent.
 %{python_sitelib}/contrail_vrouter_provisioning*
 %{python_sitelib}/ContrailVrouterCli*
 
-%pre vrouter-agent
-set -e
-getent group contrail >/dev/null || groupadd -r contrail
-getent passwd contrail >/dev/null || \
-  useradd -r -g contrail -d /var/lib/contrail -s /bin/false \
-  -c "OpenContail daemon" contrail
-
+%if 0%{?rhel} >= 8
 %post vrouter-agent
-mkdir -p /var/log/contrail /var/lib/contrail/ /etc/contrail/
-mkdir -p /var/lib/contrail/dhcp/
-mkdir -p /var/lib/contrail/backup
-mkdir -p /etc/contrail/ssl/certs/ /etc/contrail/ssl/private/
-chown contrail:adm /var/log/contrail
-chmod 0750 /var/log/contrail
-chown -R contrail:contrail /var/lib/contrail/ /etc/contrail/ /etc/contrail/ssl/
-chown -R contrail:contrail /etc/contrail/ssl/certs/ /etc/contrail/ssl/private/
-chmod 0750 /etc/contrail/ /etc/contrail/ssl/ /etc/contrail/ssl/certs/
-chmod 0700 /etc/contrail/ssl/private/
-chmod 0750 /var/lib/contrail/dhcp/
-chmod 0750 /var/lib/contrail/backup/
+set -e
+python2 -m pip install \
+  paramiko \
+  passlib
+%endif
+
 
 %package control
 Summary:          Contrail Control
@@ -514,21 +506,8 @@ eventually consistent.
 %attr(755, root, root) %{_bindir}/contrail-control*
 %{python_sitelib}/ContrailControlCli*
 
-%pre control
-set -e
-# Create the "contrail" user
-getent group contrail >/dev/null || groupadd -r contrail
-getent passwd contrail >/dev/null || \
-  useradd -r -g contrail -d /var/lib/contrail -s /bin/false \
-  -c "OpenContail daemon" contrail
-
 %post control
 set -e
-mkdir -p /var/log/contrail /var/lib/contrail/ /etc/contrail/
-chown -R contrail:adm /var/log/contrail
-chmod 0750 /var/log/contrail
-chown -R contrail:contrail /var/lib/contrail/ /etc/contrail/
-chmod 0750 /etc/contrail/
 # Use authbind to bind contrail-control on a reserved port,
 # with contrail user privileges
 if [ ! -f /etc/authbind/byport/179 ]; then
@@ -537,6 +516,7 @@ if [ ! -f /etc/authbind/byport/179 ]; then
   chmod 0755 /etc/authbind/byport/179
 fi
 
+
 %package -n python-opencontrail-vrouter-netns
 
 Summary:            OpenContrail vRouter netns
@@ -544,22 +524,25 @@ Summary:            OpenContrail vRouter netns
 Group:              Applications/System
 
 %if 0%{?rhel} > 6
+# tpc bin
 Requires:           python-websocket-client >= 0.32.0
 Requires:           python2-docker
 %else
 Requires:           python-docker-py
 %endif
-
-Requires:           python-unittest2
 Requires:           iproute >= 3.1.0
 Requires:           python2-requests >= 2.20.0
+Requires:           python2-future
+# tpc
+Requires:           python-configparser
+%if 0%{?rhel} < 8
+Requires:           python-unittest2
 Requires:           python-eventlet < 0.19.0
 Requires:           python-enum34
 Requires:           python-keystoneclient
 Requires:           python-barbicanclient
 Requires:           python-pyOpenSSL
-Requires:           python2-future
-Requires:           python-configparser
+%endif
 
 %description -n python-opencontrail-vrouter-netns
 Contrail Virtual Router NetNS package
@@ -569,6 +552,18 @@ Contrail Virtual Router NetNS package
 %{python_sitelib}/opencontrail_vrouter_*
 %{_bindir}/opencontrail-vrouter-*
 /etc/sudoers.d/contrail-lbaas
+
+%if 0%{?rhel} >= 8
+%post -n python-opencontrail-vrouter-netns
+set -e
+python2 -m pip install \
+  barbicanclient \
+  enum34 \
+  "eventlet < 0.19.0" \
+  keystoneclient \
+  pyOpenSSL \
+  unittest2
+%endif
 
 
 %package lib
@@ -588,55 +583,55 @@ Summary: Contrail Config
 Group:              Applications/System
 
 Requires:           python-contrail >= %{_verstr}-%{_relstr}
-Requires:           python-bitarray >= 0.8.0
 Requires:           python2-future
-Requires:           python-configparser
-%if 0%{?rhel} >= 7
-Requires: python-gevent >= 1.0
-%endif
-%if 0%{?rhel} <= 6
-Requires:          python-gevent
-%endif
-Requires:           python-lxml >= 2.3.2
-Requires:           python-pycassa
-Requires:           python-thrift >= 0.9.1
-Requires:           python-psutil >= 0.6.0
-Requires:           python2-requests >= 2.20.0
-Requires:           python-zope-interface
-Requires:           xmltodict >= 0.7.0
-Requires:           python-jsonpickle
-Requires:           python-amqp
-Requires:           python-kazoo == 2.7.0
-Requires:           python-ncclient >= 0.3.2
-%if 0%{?rhel}
-Requires:           python-pysnmp
-%else
-Requires:           python2-pysnmp
-%endif
-Requires:           python-keystoneclient
-Requires:           python-keystonemiddleware
-Requires:           python-swiftclient
-Requires:           python2-jmespath
-Requires:           python-subprocess32 >= 3.2.6
-Requires:           python2-jsonschema >= 2.5.1
 Requires:           openssh-clients
-Requires:           python-attrdict
-Requires:           python-pyhash
-%if 0%{?rhel} > 6
-Requires:           python2-docker
-%else
-Requires:           python-docker-py
-%endif
-%if 0%{?rhel} > 6
-Requires:           python2-crypto
-%else
-Requires:           python-crypto
-%endif
-Requires:           python-pyroute2
-Requires:           openssl-devel
 Requires:           uwsgi
+# tpc bin
 Requires:           uwsgi-plugin-python2 >= 2.0.18
 Requires:           uwsgi-plugin-python2-gevent >= 2.0.18
+Requires:           python2-bitarray >= 0.8.0
+Requires:           python2-requests >= 2.20.0
+%if 0%{?rhel} <= 6
+Requires:           python-docker-py
+%else
+# tpc bin
+Requires:           python2-docker
+%endif
+  # tpc
+Requires:           python-attrdict
+Requires:           python-configparser
+Requires:           python-kazoo == 2.7.0
+Requires:           python-pyhash
+Requires:           python-pycassa
+Requires:           python-thrift >= 0.9.1
+Requires:           xmltodict >= 0.7.0
+%if 0%{?rhel} < 8
+%if 0%{?rhel} <= 6
+Requires:           python-gevent
+%else
+Requires:           python-gevent >= 1.0
+%endif
+Requires:           python-amqp
+Requires:           python-crypto
+Requires:           python-jsonpickle
+Requires:           python-keystoneclient
+Requires:           python-keystonemiddleware
+Requires:           python-lxml >= 2.3.2
+Requires:           python-ncclient >= 0.3.2
+Requires:           python-psutil >= 0.6.0
+Requires:           python-pyroute2
+Requires:           python-pysnmp
+Requires:           python-subprocess32 >= 3.2.6
+Requires:           python-swiftclient
+Requires:           python-zope-interface
+Requires:           python2-jmespath
+Requires:           python2-jsonschema >= 2.5.1
+Requires:           openssl <= 1:1.0.2o
+%else
+Requires:           python2-lxml >= 2.3.2
+Requires:           compat-openssl10 <= 1:1.0.2o
+%endif
+
 %description config
 Contrail Config package
 
@@ -688,17 +683,9 @@ in a NoSQL database.
 /usr/share/doc/contrail-config/
 %endif
 
-%pre config
-set -e
-# Create the "contrail" user
-getent group contrail >/dev/null || groupadd -r contrail
-getent passwd contrail >/dev/null || \
-  useradd -r -g contrail -d /var/lib/contrail -s /bin/false \
-  -c "OpenContail daemon" contrail
-
 %post config
 set -e
-
+%if 0%{?rhel} < 8
 # CEM-21188 Config requires to upgrade `python-keystonemiddleware` version.
 # To fix 'API slowness on one of the Contrail Controller' config-api requires
 # new version of keystonemiddleware library >= 5.0.0. Cause it's not present
@@ -706,42 +693,61 @@ set -e
 # yum dependency must stay in Requires section to install required deps
 # from yum repos.
 python2 -m pip install --upgrade "keystonemiddleware>=5.0.0,<7.0.0"
-
-mkdir -p /var/log/contrail /var/lib/contrail/ /etc/contrail/ /etc/ansible
-chown -R contrail:adm /var/log/contrail
-chmod 0750 /var/log/contrail
-chown -R contrail:contrail /var/lib/contrail/ /etc/contrail/
-chmod 0750 /etc/contrail/
-tar -xvzf %{_fabricansible}/*.tar.gz -C %{_fabricansible}
-mv %{_fabricansible}/fabric_ansible_playbooks-0.1dev/* %{_fabricansible}/
-rmdir  %{_fabricansible}/fabric_ansible_playbooks-0.1dev/
+%else
+python2 -m pip install \
+  amqp \
+  crypto \
+  gevent \
+  jmespath \
+  "jsonschema>=2.5.1" \
+  jsonpickle \
+  keystoneclient \
+  "keystonemiddleware>=5.0.0,<7.0.0" \
+  "psutil>=0.6.0" \
+  "ncclient>=0.3.2" \
+  pyroute2 \
+  pysnmp \
+  subprocess32 \
+  swiftclient \
+  zope-interface
+%endif
+mkdir -p /etc/ansible
+last=$(ls -1 --sort=v -r %{_fabricansible}/*.tar.gz | head -n 1| xargs -i basename {})
+echo "DBG: %{_fabricansible} last tar.gz = $last"
+tar -xvzf %{_fabricansible}/$last -C %{_fabricansible}
+mv %{_fabricansible}/${last//\.tar\.gz/}/* %{_fabricansible}/
+rmdir  %{_fabricansible}/${last//\.tar\.gz/}/
 cat %{_fabricansible}/ansible.cfg > /etc/ansible/ansible.cfg
+
 
 %package analytics
 Summary:            Contrail Analytics
 Group:              Applications/System
 
-Requires:           xmltodict >= 0.7.0
 Requires:           contrail-lib >= %{_verstr}-%{_relstr}
-Requires:           python-pycassa
-Requires:           python-redis >= 2.10.0
-Requires:           redis >= 2.6.13-1
+Requires:           protobuf
 Requires:           python-contrail >= %{_verstr}-%{_relstr}
+Requires:           python2-future
+Requires:           redis >= 2.6.13-1
+%if 0%{?rhel} < 8
+Requires:           python-redis >= 2.10.0
 Requires:           python-psutil >= 0.6.0
 Requires:           python-prettytable
-Requires:           protobuf
-Requires:           cassandra-cpp-driver
-Requires:           libzookeeper
-Requires:           net-snmp-python
-Requires:           librdkafka1 >= 1.5.0
-Requires:           python-kafka >= 1.4.0
-Requires:           python-stevedore
-Requires:           python-kazoo == 2.7.0
-Requires:           python-sseclient >= 0.0.26
 Requires:           python-amqp
+Requires:           python-stevedore
+Requires:           net-snmp-python
+%endif
+#tpc
+Requires:           cassandra-cpp-driver
 Requires:           grok
-Requires:           python2-future
+Requires:           libzookeeper
+Requires:           librdkafka1 >= 1.5.0
 Requires:           python-configparser
+Requires:           python-kafka >= 1.4.0
+Requires:           python-kazoo == 2.7.0
+Requires:           python-pycassa
+Requires:           python-sseclient >= 0.0.26
+Requires:           xmltodict >= 0.7.0
 %if 0%{?rhel} >= 7
 Requires:           python-cassandra-driver >= 3.0.0
 %endif
@@ -787,21 +793,18 @@ This information includes statistics,logs, events, and errors.
 /usr/share/mibs/netsnmp
 /etc/contrail/snmp.conf
 
-%pre analytics
-set -e
-# Create the "contrail" user
-getent group contrail >/dev/null || groupadd -r contrail
-getent passwd contrail >/dev/null || \
-  useradd -r -g contrail -d /var/lib/contrail -s /bin/false \
-  -c "OpenContail daemon" contrail
-
+%if 0%{?rhel} >= 8
 %post analytics
 set -e
-mkdir -p /var/log/contrail /var/lib/contrail/ /etc/contrail/
-chown -R contrail:adm /var/log/contrail
-chmod 0750 /var/log/contrail
-chown -R contrail:contrail /var/lib/contrail/ /etc/contrail/
-chmod 0750 /etc/contrail/
+python2 -m pip install \
+  amqp \
+  netsnmp \
+  "redis >= 2.10.0" \
+  "psutil >= 0.6.0" \
+  prettytable \
+  stevedore
+%endif
+
 
 %package dns
 Summary:            Contrail Dns
@@ -809,6 +812,7 @@ Group:              Applications/System
 
 Requires:           authbind
 Requires:           python2-future
+# tpc
 Requires:           python-configparser
 
 %description dns
@@ -817,22 +821,8 @@ DNS provides contrail-dns, contrail-named, contrail-rndc and
 contrail-rndc-confgen daemons
 Provides vrouter services
 
-%pre dns
-set -e
-# Create the "contrail" user
-getent group contrail >/dev/null || groupadd -r contrail
-getent passwd contrail >/dev/null || \
-  useradd -r -g contrail -d /var/lib/contrail -s /bin/false \
-  -c "OpenContail daemon" contrail
-
 %post dns
 set -e
-mkdir -p /var/log/contrail /etc/contrail/dns
-chown -R contrail:adm /var/log/contrail
-chmod 0750 /var/log/contrail
-chown -R contrail. /etc/contrail/dns
-chmod 0750 /etc/contrail/dns
-
 # Use authbind to bind amed on a reserved port,
 # with contrail user privileges
 if [ ! -f /etc/authbind/byport/53 ]; then
@@ -855,6 +845,7 @@ fi
 %docdir %{python2_sitelib}/doc/*
 %endif
 
+
 %package nova-vif
 Summary:            Contrail nova vif driver
 Group:              Applications/System
@@ -868,15 +859,21 @@ Contrail Nova Vif driver package
 %{python_sitelib}/vif_plug_vrouter
 %{python_sitelib}/vif_plug_contrail_vrouter
 
+
 %package utils
 Summary: Contrail utility sctipts.
 Group: Applications/System
 
 Requires:           lsof
+%if 0%{?rhel} < 8
 Requires:           python-lxml >= 2.3.2
+%else
+Requires:           python2-lxml >= 2.3.2
+%endif
 Requires:           python2-requests >= 2.20.0
-Requires:           python-contrail >= %{_verstr}-%{_relstr}
 Requires:           python2-future
+Requires:           python-contrail >= %{_verstr}-%{_relstr}
+# tpc
 Requires:           python-configparser
 
 %description utils
@@ -885,6 +882,7 @@ Contrail utility sctipts package
 %files -f %{buildroot}/contrail-utils-bin-includes.txt utils
 %defattr(-, root, root)
 /usr/share/contrail-utils/*
+
 
 %package docs
 Summary: Documentation for OpenContrail
@@ -906,13 +904,16 @@ Summary:            Kubernetes network manager
 Group:              Applications/System
 
 Requires:    python-contrail >= %{_verstr}-%{_relstr}
-Requires:    python-gevent
+%if 0%{?rhel} < 8
+Requires:    python-gevent >= 1.0
+Requires:    python-enum34
+%endif
 Requires:    python2-requests >= 2.20.0
 Requires:    python2-future
+# tpc
 Requires:    python-configparser
-Requires:    python-kazoo
-Requires:    python-enum34
 Requires:    python-bitstring
+Requires:    python-kazoo
 
 %description kube-manager
 Contrail kubernetes network manager package
@@ -921,21 +922,14 @@ This package contains the kubernetes network management modules.
 %{python_sitelib}/kube_manager*
 %{_bindir}/contrail-kube-manager
 
-%pre kube-manager
-set -e
-# Create the "contrail" user
-getent group contrail >/dev/null || groupadd -r contrail
-getent passwd contrail >/dev/null || \
-  useradd -r -g contrail -d /var/lib/contrail -s /bin/false \
-  -c "OpenContail daemon" contrail
-
+%if 0%{?rhel} >= 8
 %post kube-manager
 set -e
-mkdir -p /var/log/contrail /var/lib/contrail/ /etc/contrail/
-chown -R contrail:adm /var/log/contrail
-chmod 0750 /var/log/contrail
-chown -R contrail:contrail /var/lib/contrail/ /etc/contrail/
-chmod 0750 /etc/contrail/
+python2 -m pip install \
+  enum34 \
+  gevent
+%endif
+
 
 %package mesos-manager
 Summary:            Mesos network manager
@@ -943,12 +937,15 @@ Summary:            Mesos network manager
 Group:              Applications/System
 
 Requires:    python-contrail >= %{_verstr}-%{_relstr}
-Requires:    python-gevent
+%if 0%{?rhel} < 8
+Requires:    python-gevent >= 1.0
+Requires:    python-enum34
+%endif
 Requires:    python2-requests >= 2.20.0
 Requires:    python2-future
+# tpc
 Requires:    python-configparser
 Requires:    python-kazoo
-Requires:    python-enum34
 
 %description mesos-manager
 Contrail Mesos network manager package
@@ -965,13 +962,14 @@ getent passwd contrail >/dev/null || \
   useradd -r -g contrail -d /var/lib/contrail -s /bin/false \
   -c "OpenContail daemon" contrail
 
+%if 0%{?rhel} >= 8
 %post mesos-manager
 set -e
-mkdir -p /var/log/contrail /var/lib/contrail/ /etc/contrail/
-chown -R contrail:adm /var/log/contrail
-chmod 0750 /var/log/contrail
-chown -R contrail:contrail /var/lib/contrail/ /etc/contrail/
-chmod 0750 /etc/contrail/
+python2 -m pip install \
+  enum34 \
+  gevent
+%endif
+
 
 %package k8s-cni
 Summary:            Kubernetes cni plugin
@@ -1019,9 +1017,7 @@ Summary:            Contrail Python Lib
 
 Group:             Applications/System
 Obsoletes:         contrail-api-lib <= 0.0.1
-Requires:          python-kombu
-Requires:          python-bottle >= 0.11.6
-%if 0%{?rhel} >= 7
+%if 0%{?rhel} < 8
 Requires:          python-gevent >= 1.0
 %endif
 %if 0%{?rhel} <= 6
@@ -1035,15 +1031,21 @@ Requires:          python-consistent_hash
 %if 0%{?rhel} <= 6
 Requires:          python-importlib
 %endif
-Requires:          python-fysom
-Requires:          python2-future
+%if 0%{?rhel} < 8
+Requires:          python-kombu
+Requires:          python-stevedore
 Requires:          python-greenlet
 Requires:          python-simplejson
-Requires:          python-six
-Requires:          python-stevedore
-Requires:          python-pycassa
+%endif
+Requires:          python2-future
+Requires:          python2-six
+# tpc bin
+Requires:          python2-bottle >= 0.11.6
+Requires:          python2-bitarray
+# tpc
 Requires:          python-attrdict
-Requires:          python-bitarray
+Requires:          python-pycassa
+Requires:          python-fysom
 Requires:          python-cassandra-driver >= 3.0.0
 
 %description -n python-contrail
@@ -1065,6 +1067,18 @@ in the OpenContrail API server.
 %{python_sitelib}/ContrailCli*
 %config(noreplace) %{_contrailetc}/vnc_api_lib.ini
 /etc/bash_completion.d/bashrc_contrail_cli
+
+%if 0%{?rhel} >= 8
+%post -n python-contrail
+set -e
+python2 -m pip install \
+  gevent \
+  greenlet \
+  kombu \
+  simplejson \
+  stevedore
+%endif
+
 
 %package -n python3-contrail
 Summary:            Contrail Python3 Lib

@@ -26,15 +26,18 @@ Vendor:         Juniper Networks Inc
 BuildArch:      noarch
 
 BuildRequires: bison
-BuildRequires: boost-devel
+BuildRequires: boost-devel = 1.53.0
 BuildRequires: flex
 BuildRequires: gcc-c++
 
+%if 0%{?rhel} < 8
 Requires: python-ironicclient
 Requires: python-keystoneclient >= 0.2.0
 Requires: python-gevent
 Requires: python-netaddr
 Requires: python-kombu
+%endif
+
 Requires: python-contrail >= %{_verstr}-%{_relstr}
 
 %description
@@ -45,7 +48,7 @@ BMS Notification daemon to interface between Openstack Ironic and Contrail Analy
 rm -rf %{_sbtop}build/debug/config/ironic-notification-manager/
 rm -rf %{buildroot}%{_installdir}
 %endif
-  
+
 
 %build
 pushd %{_sbtop}controller
@@ -66,8 +69,10 @@ install -d -m 755 %{buildroot}%{python_sitelib}/ironic-notification-manager/
 pushd %{_sbtop}build/debug/config/ironic-notification-manager/
 mkdir -p dist_tmp
 cd dist_tmp
-tar zxf ../dist/ironic-notification-manager-0.1dev.tar.gz
-cd ironic-notification-manager-0.1dev
+last=$(ls -1 --sort=v -r ../dist/*.tar.gz | head -n 1| xargs -i basename {})
+echo "DBG: $(pwd)/../dist/ last tar.gz = $last"
+tar zxf ../dist/$last
+cd ${last//\.tar\.gz/}
 %{__python} setup.py install --root=%{buildroot} --no-compile %{?_venvtr}
 cd ../..
 rm -rf dist_tmp
@@ -83,3 +88,14 @@ popd
 %{_binusr}/ironic-notification-manager
 %{python_sitelib}/ironic_notification_manager
 %{python_sitelib}/ironic_notification_manager-*
+
+%if 0%{?rhel} >= 8
+%post
+set -e
+python2 -m pip install \
+  gevent \
+  ironicclient \
+  "keystoneclient>=0.2.0" \
+  kombu \
+  netaddr
+%endif

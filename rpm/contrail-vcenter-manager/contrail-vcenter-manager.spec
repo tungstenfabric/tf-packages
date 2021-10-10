@@ -26,18 +26,26 @@ URL:        http://www.juniper.net/
 Vendor:     Juniper Networks Inc
 
 BuildArch: noarch
-BuildRequires: python-setuptools
+BuildRequires: python2-setuptools
 BuildRequires: python3-setuptools
+%if 0%{?rhel} < 8
 BuildRequires: scons
-
+%endif
+Requires: contrail-vrouter-agent
 Requires: python-contrail-vrouter-api
 Requires: python-contrail
+Requires: python2-future
+%if 0%{?rhel} < 8
 Requires: python-gevent
 Requires: PyYAML
+%else
+Requires: python2-pyyaml
+%endif
+
+# tpc bin
 Requires: python2-pyvmomi
-Requires: python-ipaddress
-Requires: contrail-vrouter-agent
-Requires: python2-future
+Requires: python2-ipaddress
+# tpc
 Requires: python-configparser
 
 %description
@@ -60,4 +68,7 @@ popd
 %exclude %{python_sitelib}/tests*
 
 %post
+%if 0%{?rhel} < 8
+python2 -m pip install gevent
+%endif
 mkdir -p /etc/contrail/contrail-vcenter-manager

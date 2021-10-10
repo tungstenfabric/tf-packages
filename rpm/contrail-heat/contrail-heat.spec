@@ -14,7 +14,9 @@ Version:    %{_verstr}
 Release:    %{_relstr}%{?dist}
 Summary:    Contrail Heat Resources and Templates%{?_gitVer}
 
+%if 0%{?rhel} < 8
 Requires:   python-gevent
+%endif
 
 Group:      Applications/System
 License:    Commercial
@@ -22,7 +24,7 @@ URL:        http://www.juniper.net/
 Vendor:     Juniper Networks Inc
 
 BuildArch: noarch
-BuildRequires: python-setuptools
+BuildRequires: python2-setuptools
 BuildRequires: python3-setuptools
 
 %description
@@ -41,4 +43,8 @@ popd
 %defattr(-,root,root,-)
 %{python_sitelib}/contrail_heat*
 
+%if 0%{?rhel} >= 8
 %post
+set -e
+python2 -m pip install gevent
+%endif
