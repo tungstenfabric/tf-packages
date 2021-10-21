@@ -22,7 +22,12 @@ License:    Commercial
 URL:        http://www.juniper.net/
 Vendor:     Juniper Networks Inc
 
+%if 0%{?rhel} < 8
 BuildRequires:  nodejs = 0.10.48-1contrail.el7
+%else
+BuildRequires:  nodejs = 0.10.48-1contrail.el8
+%endif
+
 Requires:  redis
 Requires:  contrail-web-core >= %{_verstr}-%{_relstr}
 

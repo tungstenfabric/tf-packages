@@ -33,11 +33,13 @@ URL:       http://www.juniper.net/
 Vendor:    Juniper Networks Inc
 
 Requires:       redis
+%if 0%{?rhel} < 8
 BuildRequires:  nodejs = 0.10.48-1contrail.el7
 Requires:       nodejs = 0.10.48-1contrail.el7
-%if 0%{?rhel} < 8
 Requires:       openssl <= 1:1.0.2o
 %else
+BuildRequires:  nodejs = 0.10.48-1contrail.el8
+Requires:       nodejs = 0.10.48-1contrail.el8
 Requires:       compat-openssl10 <= 1:1.0.2o
 %endif
     
