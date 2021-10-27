@@ -748,7 +748,8 @@ Requires:           python-kazoo == 2.7.0
 Requires:           python-pycassa
 Requires:           python-sseclient >= 0.0.26
 Requires:           xmltodict >= 0.7.0
-%if 0%{?rhel} >= 7
+%if 0%{?rhel} == 7
+# has incompatible deps for el8
 Requires:           python-cassandra-driver >= 3.0.0
 %endif
 
@@ -802,6 +803,7 @@ python2 -m pip install \
   "redis >= 2.10.0" \
   "psutil >= 0.6.0" \
   prettytable \
+  "cassandra-driver >= 3.0.0" \
   stevedore
 %endif
 
@@ -1046,7 +1048,10 @@ Requires:          python2-bitarray
 Requires:          python-attrdict
 Requires:          python-pycassa
 Requires:          python-fysom
+%if 0%{?rhel} < 8
+# incompatible deps for el8
 Requires:          python-cassandra-driver >= 3.0.0
+%endif
 
 %description -n python-contrail
 Contrail Virtual Router utils package
@@ -1075,6 +1080,7 @@ python2 -m pip install \
   gevent \
   greenlet \
   kombu \
+  cassandra-driver >= 3.0.0 \
   simplejson \
   stevedore
 %endif
