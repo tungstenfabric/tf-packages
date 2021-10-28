@@ -64,14 +64,7 @@ BuildRequires: python2-future
 BuildRequires: gcc
 BuildRequires: gcc-c++
 BuildRequires: grok-devel
-# kernel is required for /lib/modules content
-%define is_rhel %(cat /etc/os-release | grep ^NAME | cut -d = -f 2 | sed  's/\"//g')
-%if "%{is_rhel}" == "Red Hat Enterprise Linux" || "%{is_rhel}" == "Red Hat Enterprise Linux Server"
-BuildRequires: kernel = 3.10.0-1160.25.1.el7
-BuildRequires: kernel-devel = 3.10.0-1160.25.1.el7
-%else
-BuildRequires: kernel = 3.10.0-1160.25.1.el7
-BuildRequires: kernel-devel = 3.10.0-1160.25.1.el7
+%if ! 0%{?rhel}
 BuildRequires: python3-sphinx
 BuildRequires: python3-requests
 BuildRequires: python3-lxml

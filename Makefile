@@ -82,9 +82,7 @@ dep-%:
 	@yum-builddep $(DEPBUILD_FLAGS) -y $(SPECFILE)
 
 kernel-deps:
-ifeq ($(MULTI_KERNEL_BUILD),true)
 	$(MKFILE_DIR)utils/install_kernels.sh
-endif
 
 testdeps-rpms:
 ifeq ($(CONTRAIL_BUILD_FROM_SOURCE),true)

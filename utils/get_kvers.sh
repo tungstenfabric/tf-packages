@@ -20,6 +20,8 @@ else
     else
         # Let's use newest installed version of kernel-devel
         kvers=$(rpm -q kernel-devel --queryformat="%{buildtime}\t%{VERSION}-%{RELEASE}.%{ARCH}\n" | sort -nr | head -1 | cut -f2)
+        # set default if no installed kernel-devel
+        [[ 'not installed' =~ "$kvers" ]] || kvers="3.10.0-1160.25.1.el7.x86_64"
     fi
 fi
 
