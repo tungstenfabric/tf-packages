@@ -31,6 +31,7 @@ ifeq ($(OS_DISTR), rhel)
 	ifeq ($(OS_DISTR_VER), 8.4)
 		RPMBUILD_FLAGS += --define "__python %__python2"
 		RPMBUILD_FLAGS += --define "__brp_mangle_shebangs %{nil}"
+		RPMBUILD_FLAGS += --define "__requires_exclude /usr/bin/python"
 		DEPBUILD_FLAGS += --define "__python %__python2"
 	endif
 endif

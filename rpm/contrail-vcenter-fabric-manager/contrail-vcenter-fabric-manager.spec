@@ -68,7 +68,7 @@ popd
 %post
 set -e
 %if 0%{?rhel} >= 8
-python2 -m pip \
+%{__python} -m pip \
   gevent \
   kombu
 %endif

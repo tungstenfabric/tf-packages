@@ -75,8 +75,8 @@ Contrail Nodemgr package
 
 %build
 pushd %{_sbtop}/controller
-scons --opt=%{_sconsOpt} -U contrail-nodemgr
 
+scons --opt=%{_sconsOpt} -U contrail-nodemgr
 if [ $? -ne 0 ] ; then
   echo "build failed"
   exit -1
@@ -117,7 +117,7 @@ popd
 %if 0%{?rhel} >= 8
 %post
 set -e
-python2 -m pip install \
+%{__python} -m pip install \
   "bottle >= 0.11.6" \
   psutil
 %endif

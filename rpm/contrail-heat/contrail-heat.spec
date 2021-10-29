@@ -46,5 +46,5 @@ popd
 %if 0%{?rhel} >= 8
 %post
 set -e
-python2 -m pip install gevent
+%{__python} -m pip install gevent
 %endif

@@ -92,7 +92,7 @@ popd
 %if 0%{?rhel} >= 8
 %post
 set -e
-python2 -m pip install \
+%{__python} -m pip install \
   gevent \
   ironicclient \
   "keystoneclient>=0.2.0" \

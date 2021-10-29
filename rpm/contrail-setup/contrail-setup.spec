@@ -106,7 +106,7 @@ install -d -m 755 %{buildroot}/etc/contrail
 %post
 set -e
 %if 0%{?rhel} >= 8
-python2 -m pip install \
+%{__python} -m pip install \
     argparse\
     netaddr \
     netifaces

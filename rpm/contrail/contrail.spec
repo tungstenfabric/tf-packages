@@ -46,9 +46,6 @@ License:        ASL 2.0
 URL:            www.opencontrail.org
 Vendor:         OpenContrail Project.
 
-# to avoid depends on /usr/bin/python
-AutoReqProv: no
-
 BuildRequires: autoconf
 BuildRequires: automake
 BuildRequires: bison
@@ -158,7 +155,7 @@ pushd %{_sbtop}
 scons --opt=%{_sconsOpt} -U nova-contrail-vif
 popd
 pushd %{_sbtop}/build/noarch/nova_contrail_vif
-python setup.py install --root=%{buildroot} --no-compile
+%{__python} setup.py install --root=%{buildroot} --no-compile
 popd
 
 # contrail-docs
@@ -176,15 +173,15 @@ for mod_dir in %{buildroot}/usr/share/doc/contrail-docs/html/messages/*; do \
 done
 
 # Index files
-python %{_sbtop}/tools/packages/utils/generate_doc_index.py %{buildroot}/usr/share/doc/contrail-docs/html/messages
+%{__python} %{_sbtop}/tools/packages/utils/generate_doc_index.py %{buildroot}/usr/share/doc/contrail-docs/html/messages
 # contrail-cli
 install -d -m 0755 %{buildroot}/etc/bash_completion.d
-python %{_sbtop}/tools/packages/utils/generate_cli_commands.py %{_sbtop}/build/%{_sconsOpt}/utils/contrail-cli %{buildroot}
-pushd %{_sbtop}/build/%{_sconsOpt}/utils/contrail-cli/contrail_cli; python setup.py install --root=%{buildroot} --no-compile; popd
-pushd %{_sbtop}/build/%{_sconsOpt}/utils/contrail-cli/contrail_analytics_cli; python setup.py install --root=%{buildroot} --no-compile; popd
-pushd %{_sbtop}/build/%{_sconsOpt}/utils/contrail-cli/contrail_config_cli; python setup.py install --root=%{buildroot} --no-compile; popd
-pushd %{_sbtop}/build/%{_sconsOpt}/utils/contrail-cli/contrail_control_cli; python setup.py install --root=%{buildroot} --no-compile; popd
-pushd %{_sbtop}/build/%{_sconsOpt}/utils/contrail-cli/contrail_vrouter_cli; python setup.py install --root=%{buildroot} --no-compile; popd
+%{__python} %{_sbtop}/tools/packages/utils/generate_cli_commands.py %{_sbtop}/build/%{_sconsOpt}/utils/contrail-cli %{buildroot}
+pushd %{_sbtop}/build/%{_sconsOpt}/utils/contrail-cli/contrail_cli; %{__python} setup.py install --root=%{buildroot} --no-compile; popd
+pushd %{_sbtop}/build/%{_sconsOpt}/utils/contrail-cli/contrail_analytics_cli; %{__python} setup.py install --root=%{buildroot} --no-compile; popd
+pushd %{_sbtop}/build/%{_sconsOpt}/utils/contrail-cli/contrail_config_cli; %{__python} setup.py install --root=%{buildroot} --no-compile; popd
+pushd %{_sbtop}/build/%{_sconsOpt}/utils/contrail-cli/contrail_control_cli; %{__python} setup.py install --root=%{buildroot} --no-compile; popd
+pushd %{_sbtop}/build/%{_sconsOpt}/utils/contrail-cli/contrail_vrouter_cli; %{__python} setup.py install --root=%{buildroot} --no-compile; popd
 
 #Needed for agent container env
 # install vrouter.ko at /opt/contrail/vrouter-kernel-modules to use with containers
@@ -339,7 +336,7 @@ This package contains the configuration management modules that interface with O
 %if 0%{?rhel} >= 8
 %post config-openstack
 set -e
-python2 -m pip install \
+%{__python} -m pip install \
   ironicclient \
   ironic-inspector-client \
   keystoneclient \
@@ -453,7 +450,7 @@ package provides the contrail-vrouter user space agent.
 %if 0%{?rhel} >= 8
 %post vrouter-agent
 set -e
-python2 -m pip install \
+%{__python} -m pip install \
   paramiko \
   passlib
 %endif
@@ -519,7 +516,6 @@ Group:              Applications/System
 %if 0%{?rhel} > 6
 # tpc bin
 Requires:           python-websocket-client >= 0.32.0
-Requires:           python2-docker
 %else
 Requires:           python-docker-py
 %endif
@@ -535,6 +531,8 @@ Requires:           python-enum34
 Requires:           python-keystoneclient
 Requires:           python-barbicanclient
 Requires:           python-pyOpenSSL
+# tpc bin, but conflict for el8 
+Requires:           python2-docker
 %endif
 
 %description -n python-opencontrail-vrouter-netns
@@ -549,8 +547,9 @@ Contrail Virtual Router NetNS package
 %if 0%{?rhel} >= 8
 %post -n python-opencontrail-vrouter-netns
 set -e
-python2 -m pip install \
+%{__python} -m pip install \
   barbicanclient \
+  "docker==2.4.2" \
   enum34 \
   "eventlet < 0.19.0" \
   keystoneclient \
@@ -586,9 +585,6 @@ Requires:           python2-bitarray >= 0.8.0
 Requires:           python2-requests >= 2.20.0
 %if 0%{?rhel} <= 6
 Requires:           python-docker-py
-%else
-# tpc bin
-Requires:           python2-docker
 %endif
   # tpc
 Requires:           python-attrdict
@@ -617,6 +613,7 @@ Requires:           python-pysnmp
 Requires:           python-subprocess32 >= 3.2.6
 Requires:           python-swiftclient
 Requires:           python-zope-interface
+Requires:           python2-docker
 Requires:           python2-jmespath
 Requires:           python2-jsonschema >= 2.5.1
 Requires:           openssl <= 1:1.0.2o
@@ -685,11 +682,12 @@ set -e
 # in RHEL 7 repos we have to install it from python package in post steps.
 # yum dependency must stay in Requires section to install required deps
 # from yum repos.
-python2 -m pip install --upgrade "keystonemiddleware>=5.0.0,<7.0.0"
+%{__python} -m pip install --upgrade "keystonemiddleware>=5.0.0,<7.0.0"
 %else
-python2 -m pip install \
+%{__python} -m pip install \
   amqp \
   crypto \
+  "docker==2.4.2" \
   gevent \
   jmespath \
   "jsonschema>=2.5.1" \
@@ -790,7 +788,7 @@ This information includes statistics,logs, events, and errors.
 %if 0%{?rhel} >= 8
 %post analytics
 set -e
-python2 -m pip install \
+%{__python} -m pip install \
   amqp \
   netsnmp \
   "redis >= 2.10.0" \
@@ -920,7 +918,7 @@ This package contains the kubernetes network management modules.
 %if 0%{?rhel} >= 8
 %post kube-manager
 set -e
-python2 -m pip install \
+%{__python} -m pip install \
   enum34 \
   gevent
 %endif
@@ -960,7 +958,7 @@ getent passwd contrail >/dev/null || \
 %if 0%{?rhel} >= 8
 %post mesos-manager
 set -e
-python2 -m pip install \
+%{__python} -m pip install \
   enum34 \
   gevent
 %endif
@@ -1069,7 +1067,7 @@ in the OpenContrail API server.
 %if 0%{?rhel} >= 8
 %post -n python-contrail
 set -e
-python2 -m pip install \
+%{__python} -m pip install \
   gevent \
   greenlet \
   kombu \

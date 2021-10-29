@@ -69,6 +69,6 @@ popd
 
 %post
 %if 0%{?rhel} < 8
-python2 -m pip install gevent
+%{__python} -m pip install gevent
 %endif
 mkdir -p /etc/contrail/contrail-vcenter-manager
