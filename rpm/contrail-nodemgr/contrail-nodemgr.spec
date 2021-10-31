@@ -42,8 +42,6 @@ Requires:         ntp
 Requires:         python-bottle >= 0.11.6
 Requires:         python-psutil
 Requires:         PyYAML
-%else
-Requires:         python2-pyyaml
 %endif
 Requires:         python2-setuptools
 # tpc
@@ -117,9 +115,10 @@ popd
 %if 0%{?rhel} >= 8
 %post
 set -e
-%{__python} -m pip install \
+%{__python} -m pip install --no-compile \
   "bottle >= 0.11.6" \
-  psutil
+  psutil \
+  "PyYAML>=5.1"
 %endif
 
 %changelog

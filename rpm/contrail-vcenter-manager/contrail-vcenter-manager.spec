@@ -38,8 +38,6 @@ Requires: python2-future
 %if 0%{?rhel} < 8
 Requires: python-gevent
 Requires: PyYAML
-%else
-Requires: python2-pyyaml
 %endif
 
 # tpc bin
@@ -69,6 +67,8 @@ popd
 
 %post
 %if 0%{?rhel} < 8
-%{__python} -m pip install gevent
+%{__python} -m pip install --no-compile \
+  "gevent>=1.0,<1.5.0" \
+  "PyYAML>=5.1"
 %endif
 mkdir -p /etc/contrail/contrail-vcenter-manager

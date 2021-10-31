@@ -46,5 +46,6 @@ popd
 %if 0%{?rhel} >= 8
 %post
 set -e
-%{__python} -m pip install gevent
+%{__python} -m pip install --no-compile \
+  "gevent>=1.0,<1.5.0"
 %endif

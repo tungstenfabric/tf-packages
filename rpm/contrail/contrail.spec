@@ -336,7 +336,7 @@ This package contains the configuration management modules that interface with O
 %if 0%{?rhel} >= 8
 %post config-openstack
 set -e
-%{__python} -m pip install \
+%{__python} -m pip install --no-compile \
   ironicclient \
   ironic-inspector-client \
   keystoneclient \
@@ -450,7 +450,7 @@ package provides the contrail-vrouter user space agent.
 %if 0%{?rhel} >= 8
 %post vrouter-agent
 set -e
-%{__python} -m pip install \
+%{__python} -m pip install --no-compile \
   paramiko \
   passlib
 %endif
@@ -547,7 +547,7 @@ Contrail Virtual Router NetNS package
 %if 0%{?rhel} >= 8
 %post -n python-opencontrail-vrouter-netns
 set -e
-%{__python} -m pip install \
+%{__python} -m pip install --no-compile \
   barbicanclient \
   "docker==2.4.2" \
   enum34 \
@@ -684,22 +684,22 @@ set -e
 # from yum repos.
 %{__python} -m pip install --upgrade "keystonemiddleware>=5.0.0,<7.0.0"
 %else
-%{__python} -m pip install \
+%{__python} -m pip install --no-compile \
   amqp \
   crypto \
   "docker==2.4.2" \
-  gevent \
+  "gevent>=1.0,<1.5.0" \
   jmespath \
   "jsonschema>=2.5.1" \
   jsonpickle \
-  keystoneclient \
+  python-keystoneclient \
   "keystonemiddleware>=5.0.0,<7.0.0" \
   "psutil>=0.6.0" \
   "ncclient>=0.3.2" \
-  pyroute2 \
+  "pyroute2==0.5.19" \
   pysnmp \
   subprocess32 \
-  swiftclient \
+  python-swiftclient \
   zope-interface
 %endif
 mkdir -p /etc/ansible
@@ -788,7 +788,7 @@ This information includes statistics,logs, events, and errors.
 %if 0%{?rhel} >= 8
 %post analytics
 set -e
-%{__python} -m pip install \
+%{__python} -m pip install --no-compile \
   amqp \
   netsnmp \
   "redis >= 2.10.0" \
@@ -891,6 +891,7 @@ modules/daemons.
 %files docs
 %doc /usr/share/doc/contrail-docs/html/*
 
+
 %package kube-manager
 Summary:            Kubernetes network manager
 
@@ -918,9 +919,9 @@ This package contains the kubernetes network management modules.
 %if 0%{?rhel} >= 8
 %post kube-manager
 set -e
-%{__python} -m pip install \
+%{__python} -m pip install --no-compile \
   enum34 \
-  gevent
+  "gevent>=1.0,<1.5.0"
 %endif
 
 
@@ -958,9 +959,9 @@ getent passwd contrail >/dev/null || \
 %if 0%{?rhel} >= 8
 %post mesos-manager
 set -e
-%{__python} -m pip install \
+%{__python} -m pip install --no-compile \
   enum34 \
-  gevent
+  "gevent>=1.0,<1.5.0"
 %endif
 
 
@@ -1067,11 +1068,11 @@ in the OpenContrail API server.
 %if 0%{?rhel} >= 8
 %post -n python-contrail
 set -e
-%{__python} -m pip install \
-  gevent \
+%{__python} -m pip install --no-compile \
+  "gevent>=1.0,<1.5.0" \
   greenlet \
   kombu \
-  cassandra-driver >= 3.0.0 \
+  "cassandra-driver>=3.0.0" \
   simplejson \
   stevedore
 %endif

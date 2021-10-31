@@ -106,7 +106,7 @@ install -d -m 755 %{buildroot}/etc/contrail
 %post
 set -e
 %if 0%{?rhel} >= 8
-%{__python} -m pip install \
+%{__python} -m pip install --no-compile \
     argparse\
     netaddr \
     netifaces
@@ -114,7 +114,7 @@ set -e
 cd %{_contrailopt}
 tar xzvf cfgm_utils.tgz
 tar xzvf dns_scripts.tgz -C utils
-rm %{_contrailopt}/bin/openstack-db %{_contrailopt}/bin/openstack-config
+rm -f %{_contrailopt}/bin/openstack-db %{_contrailopt}/bin/openstack-config
 ln -sbf %{_contrailopt}/bin/* %{_bindir}
 
 %files
