@@ -66,7 +66,7 @@ popd
 %exclude %{python_sitelib}/tests*
 
 %post
-%if 0%{?rhel} < 8
+%if 0%{?rhel} >= 8
 %{__python} -m pip install --no-compile \
   "gevent>=1.0,<1.5.0" \
   "PyYAML>=5.1"

@@ -37,8 +37,8 @@ Vendor:           Juniper Networks Inc
 
 Requires:         contrail-lib >= %{_verstr}-%{_relstr}
 Requires:         python-contrail >= %{_verstr}-%{_relstr}
-Requires:         ntp
 %if 0%{?rhel} < 8
+Requires:         ntp
 Requires:         python-bottle >= 0.11.6
 Requires:         python-psutil
 Requires:         PyYAML

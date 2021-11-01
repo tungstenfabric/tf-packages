@@ -513,10 +513,7 @@ Summary:            OpenContrail vRouter netns
 
 Group:              Applications/System
 
-%if 0%{?rhel} > 6
-# tpc bin
-Requires:           python-websocket-client >= 0.32.0
-%else
+%if 0%{?rhel} <= 6
 Requires:           python-docker-py
 %endif
 Requires:           iproute >= 3.1.0
@@ -533,6 +530,8 @@ Requires:           python-barbicanclient
 Requires:           python-pyOpenSSL
 # tpc bin, but conflict for el8 
 Requires:           python2-docker
+# tpc bin, but conflict for el8 
+Requires:           python-websocket-client >= 0.32.0
 %endif
 
 %description -n python-opencontrail-vrouter-netns
@@ -554,7 +553,8 @@ set -e
   "eventlet < 0.19.0" \
   keystoneclient \
   pyOpenSSL \
-  unittest2
+  unittest2 \
+  "websocket-client>=0.32.0"
 %endif
 
 
@@ -698,6 +698,7 @@ set -e
   "ncclient>=0.3.2" \
   "pyroute2==0.5.19" \
   pysnmp \
+  "PyYAML>=5.1" \
   subprocess32 \
   python-swiftclient \
   zope-interface
