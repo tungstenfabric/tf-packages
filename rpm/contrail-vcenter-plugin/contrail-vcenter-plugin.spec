@@ -28,7 +28,7 @@ Vendor:     Juniper Networks Inc
 
 BuildRequires: maven
 
-Requires:   java-1.7.0-openjdk-headless
+Requires:   java-1.8.0-openjdk-headless
 Requires:   libcontrail-vrouter-java-api
 Requires:   libcontrail-java-api
 Requires:   libcontrail-vijava
@@ -41,7 +41,7 @@ Contrail vCenter Plugin Application running on Contrail config node
 Summary:    Contrail java api %{?_gitVer}
 Group:      Applications/System
 
-Requires:   java-1.7.0-openjdk-headless
+Requires:   java-1.8.0-openjdk-headless
 
 %description -n libcontrail-java-api
 Contrail VNC API Java Library.
@@ -50,7 +50,7 @@ Contrail VNC API Java Library.
 Summary:    Contrail vRouter API Java Library %{?_gitVer}
 Group:      Applications/System
 
-Requires:   java-1.7.0-openjdk-headless
+Requires:   java-1.8.0-openjdk-headless
 Requires:   libcontrail-java-api
 
 %description -n libcontrail-vrouter-java-api
@@ -60,7 +60,7 @@ contrail-vrouter Java API bindings
 Summary:    Contrail vijava %{?_gitVer}
 Group:      Applications/System
 
-Requires:   java-1.7.0-openjdk-headless
+Requires:   java-1.8.0-openjdk-headless
 
 %description -n libcontrail-vijava
 Provides libcontrail-vijava binary
