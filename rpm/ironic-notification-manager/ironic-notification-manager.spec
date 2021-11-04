@@ -94,7 +94,7 @@ popd
 set -e
 %{__python} -m pip install --no-compile \
   "gevent>=1.0,<1.5.0" \
-  ironicclient \
+  python-ironicclient \
   "keystoneclient>=0.2.0" \
   kombu \
   netaddr

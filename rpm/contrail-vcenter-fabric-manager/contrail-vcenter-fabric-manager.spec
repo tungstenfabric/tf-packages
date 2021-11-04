@@ -68,7 +68,7 @@ popd
 %post
 set -e
 %if 0%{?rhel} >= 8
-%{__python} -m pip \
+%{__python} -m pip install --no-compile \
   "gevent>=1.0,<1.5.0" \
   kombu
 %endif

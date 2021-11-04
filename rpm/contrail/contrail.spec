@@ -337,7 +337,7 @@ This package contains the configuration management modules that interface with O
 %post config-openstack
 set -e
 %{__python} -m pip install --no-compile \
-  ironicclient \
+  python-ironicclient \
   ironic-inspector-client \
   keystoneclient \
   novaclient
@@ -547,7 +547,7 @@ Contrail Virtual Router NetNS package
 %post -n python-opencontrail-vrouter-netns
 set -e
 %{__python} -m pip install --no-compile \
-  barbicanclient \
+  python-barbicanclient \
   "docker==2.4.2" \
   enum34 \
   "eventlet < 0.19.0" \
@@ -686,7 +686,7 @@ set -e
 %else
 %{__python} -m pip install --no-compile \
   amqp \
-  crypto \
+  "pycrypto==2.6.1" \
   "docker==2.4.2" \
   "gevent>=1.0,<1.5.0" \
   jmespath \
@@ -727,13 +727,13 @@ Requires:           python-psutil >= 0.6.0
 Requires:           python-prettytable
 Requires:           python-amqp
 Requires:           python-stevedore
-Requires:           net-snmp-python
 %endif
 #tpc
 Requires:           cassandra-cpp-driver
 Requires:           grok
 Requires:           libzookeeper
 Requires:           librdkafka1 >= 1.5.0
+Requires:           net-snmp-python
 Requires:           python-configparser
 Requires:           python-kafka >= 1.4.0
 Requires:           python-kazoo == 2.7.0
@@ -791,7 +791,6 @@ This information includes statistics,logs, events, and errors.
 set -e
 %{__python} -m pip install --no-compile \
   amqp \
-  netsnmp \
   "redis >= 2.10.0" \
   "psutil >= 0.6.0" \
   prettytable \
