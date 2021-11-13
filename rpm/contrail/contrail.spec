@@ -720,8 +720,8 @@ Requires:           contrail-lib >= %{_verstr}-%{_relstr}
 Requires:           protobuf
 Requires:           python-contrail >= %{_verstr}-%{_relstr}
 Requires:           python2-future
-Requires:           redis >= 2.6.13-1
 %if 0%{?rhel} < 8
+Requires:           redis >= 2.6.13-1
 Requires:           python-redis >= 2.10.0
 Requires:           python-psutil >= 0.6.0
 Requires:           python-prettytable
@@ -791,10 +791,10 @@ This information includes statistics,logs, events, and errors.
 set -e
 %{__python} -m pip install --no-compile \
   amqp \
-  "redis >= 2.10.0" \
-  "psutil >= 0.6.0" \
+  "redis>=2.10.0,<=3.4.1" \
+  "psutil>=0.6.0" \
   prettytable \
-  "cassandra-driver >= 3.0.0" \
+  "cassandra-driver>=3.0.0" \
   stevedore
 %endif
 
