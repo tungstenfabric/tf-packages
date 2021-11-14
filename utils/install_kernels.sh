@@ -4,7 +4,7 @@ my_file="$(readlink -e "$0")"
 my_dir="$(dirname $my_file)"
 
 source /etc/os-release
-KERNEL_REPOSITORIES_RHEL8=${KERNEL_REPOSITORIES_RHEL8:-"--disablerepo=* --enablerepo=BaseOS"}
+KERNEL_REPOSITORIES_RHEL8=${KERNEL_REPOSITORIES_RHEL8:-"--disablerepo=* --enablerepo=rhel-8-for-x86_64-baseos-eus-rpms"}
 kvers=$($my_dir/get_kvers.sh)
 
 for kver in $kvers; do
