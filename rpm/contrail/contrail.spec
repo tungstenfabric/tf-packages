@@ -1030,9 +1030,9 @@ Requires:          python-kombu
 Requires:          python-stevedore
 Requires:          python-greenlet
 Requires:          python-simplejson
+Requires:          python2-six
 %endif
 Requires:          python2-future
-Requires:          python2-six
 # tpc bin
 Requires:          python2-bottle >= 0.11.6
 Requires:          python2-bitarray
@@ -1074,6 +1074,7 @@ set -e
   kombu \
   "cassandra-driver>=3.0.0" \
   simplejson \
+  "six>=1.12" \
   stevedore
 %endif
 
