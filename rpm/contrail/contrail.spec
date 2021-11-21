@@ -338,9 +338,9 @@ This package contains the configuration management modules that interface with O
 set -e
 %{__python} -m pip install --no-compile \
   python-ironicclient \
-  ironic-inspector-client \
-  keystoneclient \
-  novaclient
+  python-ironic-inspector-client \
+  python-keystoneclient \
+  python-novaclient
 %endif
 
 
@@ -551,7 +551,7 @@ set -e
   "docker==2.4.2" \
   enum34 \
   "eventlet < 0.19.0" \
-  keystoneclient \
+  python-keystoneclient \
   pyOpenSSL \
   unittest2 \
   "websocket-client>=0.32.0"
