@@ -516,6 +516,7 @@ Group:              Applications/System
 %if 0%{?rhel} <= 6
 Requires:           python-docker-py
 %endif
+Requires:           iptables
 Requires:           iproute >= 3.1.0
 Requires:           python2-requests >= 2.20.0
 Requires:           python2-future
