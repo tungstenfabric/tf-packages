@@ -14,6 +14,7 @@ KVERS        ?= $(shell $(MKFILE_DIR)utils/get_kvers.sh)
 BUILDTAG     ?= $(shell date +%m%d%Y%H%M)
 SKUTAG       ?= ocata
 ENABLEMLX    ?= FALSE
+ENABLEN3K    ?= TRUE
 MANIFESTFILE ?= $(SB_TOP).repo/manifest.xml
 
 OS_DISTR      ?= $(shell cat /etc/os-release | grep '^ID=' | cut -d = -f 2 | sed  's/\"//g')
@@ -51,6 +52,11 @@ endif
 ifeq ($(ENABLEMLX),TRUE)
 	RPMBUILD_FLAGS += --define "_enableMellanox $(ENABLEMLX)"
 	DEPBUILD_FLAGS += --define "_enableMellanox $(ENABLEMLX)"
+endif
+
+ifeq ($(ENABLEN3K),TRUE)
+	RPMBUILD_FLAGS += --define "_enableIntelN3K $(ENABLEN3K)"
+	DEPBUILD_FLAGS += --define "_enableIntelN3K $(ENABLEN3K)"
 endif
 
 ifeq ($(DEBUGINFO),TRUE)

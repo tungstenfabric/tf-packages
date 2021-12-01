@@ -29,11 +29,21 @@
 %define         _enableMlx FALSE
 %endif
 
+%if 0%{?_enableIntelN3K:1}
+%define         _enableN3K %{_enableIntelN3K}
+%else
+%define         _enableN3K FALSE
+%endif
+
 %if 0%{?_dpdk_build_dir:1}
 %define         _dpdk_args --dpdk-dir=%{_dpdk_build_dir}
+%define         _bin_path %{_dpdk_build_dir}
 %else
 %define         _dpdk_args %{nil}
+%define         _bin_path %{_sbtop}/build/%{_sconsOpt}
 %endif
+
+%define         _build_jobs nproc --ignore=1
 
 %bcond_without debuginfo
 
@@ -75,7 +85,12 @@ Requires: rdma-core = 47mlnx1-1.47329
 Requires: libibverbs = 47mlnx1-1.47329
 %define         _sconsAddOpts      enableMellanox
 %else
+%if %{_enableN3K} == "TRUE"
+BuildRequires: json-c-devel
+%define         _sconsAddOpts      enableN3K
+%else
 %define         _sconsAddOpts      none
+%endif
 %endif
 
 %description
@@ -89,27 +104,37 @@ Provides contrail-vrouter-dpdk binary
 %if 0%{?_pre_cleanup:1}
     # Cleanup
 pushd %{_sbtop}
-scons -c \
+RTE_KERNELDIR=%{_kernel_dir} scons -c \
+    -j "$(%_build_jobs)" \
     --opt=%{_sconsOpt} \
     %{_dpdk_args} \
     --root=%{_builddir} \
     --add-opts=%{_sconsAddOpts} \
+    --dpdk-jobs="$(%_build_jobs)" \
     vrouter/dpdk
 popd
 %endif
 
 %build
 pushd %{_sbtop}
-scons \
+RTE_KERNELDIR=%{_kernel_dir} scons \
+    -j "$(%_build_jobs)" \
     --opt=%{_sconsOpt} \
     %{_dpdk_args} \
     --root=%{_builddir} \
     --add-opts=%{_sconsAddOpts} \
+    --dpdk-jobs="$(%_build_jobs)" \
     vrouter/dpdk
 popd
 
 %install
 # Install Directories
+
+%define EXTRA_FILES %{buildroot}/../contrail-vrouter-dpdk.ExtraFiles.list
+N3KFLOW_DUMP_BINARY=$( find %{_bin_path} -name n3kflow-dump -type f 2>/dev/null | head -n 1 )
+
+echo "" > %{EXTRA_FILES}
+
 install -d -m 755 %{buildroot}/%{_bindir}
 install -p -m 755 %{_sbtop}build/%{_sconsOpt}/vrouter/dpdk/contrail-vrouter-dpdk %{buildroot}/%{_bindir}/contrail-vrouter-dpdk
 install -d -m 755 %{buildroot}/opt/contrail/ddp/
@@ -119,7 +144,12 @@ install -p -m 755 %{_sbtop}build/%{_sconsOpt}/vrouter/dpdk/dpdk-devbind.py %{bui
 # tools
 install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/dpdk/x86_64-native-linuxapp-gcc/app/testpmd %{buildroot}/usr/bin/testpmd
 
-%files
+if [ -n "$N3KFLOW_DUMP_BINARY" ]; then
+    install -p -m 755 "$N3KFLOW_DUMP_BINARY" %{buildroot}/%{_bindir}/n3kflow-dump
+    echo %{_bindir}/n3kflow-dump >> %{EXTRA_FILES}
+fi
+
+%files -f %{EXTRA_FILES}
 %defattr(-,root,root,-)
 %{_bindir}/contrail-vrouter-dpdk
 /opt/contrail/ddp/mplsogreudp.pkg
