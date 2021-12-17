@@ -130,11 +130,6 @@ popd
 %install
 # Install Directories
 
-%define EXTRA_FILES %{buildroot}/../contrail-vrouter-dpdk.ExtraFiles.list
-N3KFLOW_DUMP_BINARY=$( find %{_bin_path} -name n3kflow-dump -type f 2>/dev/null | head -n 1 )
-
-echo "" > %{EXTRA_FILES}
-
 install -d -m 755 %{buildroot}/%{_bindir}
 install -p -m 755 %{_sbtop}build/%{_sconsOpt}/vrouter/dpdk/contrail-vrouter-dpdk %{buildroot}/%{_bindir}/contrail-vrouter-dpdk
 install -d -m 755 %{buildroot}/opt/contrail/ddp/
@@ -144,10 +139,21 @@ install -p -m 755 %{_sbtop}build/%{_sconsOpt}/vrouter/dpdk/dpdk-devbind.py %{bui
 # tools
 install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/dpdk/x86_64-native-linuxapp-gcc/app/testpmd %{buildroot}/usr/bin/testpmd
 
+%define EXTRA_FILES %{buildroot}/../contrail-vrouter-dpdk.ExtraFiles.list
+
+echo "" > %{EXTRA_FILES}
+
+%if %{_enableN3K} == "TRUE"
+N3KFLOW_DUMP_BINARY=$( find %{_bin_path} -name n3kflow-dump -type f 2>/dev/null | head -n 1 )
+
 if [ -n "$N3KFLOW_DUMP_BINARY" ]; then
     install -p -m 755 "$N3KFLOW_DUMP_BINARY" %{buildroot}/%{_bindir}/n3kflow-dump
     echo %{_bindir}/n3kflow-dump >> %{EXTRA_FILES}
 fi
+
+install -p -m 755 %{_sbtop}/build/%{_sconsOpt}/vrouter/dpdk/x86_64-native-linuxapp-gcc/app/n3k-info %{buildroot}/usr/bin/n3k-info
+echo %{_bindir}/n3k-info >> %{EXTRA_FILES}
+%endif
 
 %files -f %{EXTRA_FILES}
 %defattr(-,root,root,-)
@@ -166,5 +172,17 @@ Group: Applications/System
 %description tools
 Contrail DPDK tools for debug purposes.
 
-%files tools
+%files tools -f %{EXTRA_FILES}
 %{_bindir}/testpmd
+
+%if %{_enableN3K} == "TRUE"
+
+%package n3000-tools
+Summary: tools for N3000 management
+Group: Applications/System
+
+%description n3000-tools
+Tools for N3000 management
+
+%files n3000-tools -f %{EXTRA_FILES}
+%endif
