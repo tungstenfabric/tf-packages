@@ -23,8 +23,6 @@
 %define         _sconsOpt      debug
 %endif
 
-%bcond_without debuginfo
-
 Name:             contrail-nodemgr
 Version:          %{_verstr}
 Release:          %{_relstr}%{?dist}
@@ -64,10 +62,6 @@ BuildRequires: python3-pip
 
 %description
 Contrail Nodemgr package
-
-%if %{with debuginfo}
-%debug_package
-%endif
 
 %prep
 
