@@ -33,6 +33,13 @@ ifeq ($(OS_DISTR), rhel)
 		RPMBUILD_FLAGS += --define "__python %__python2"
 		RPMBUILD_FLAGS += --define "__brp_mangle_shebangs %{nil}"
 		RPMBUILD_FLAGS += --define "__requires_exclude /usr/bin/python"
+# disable debugsources - it generates empty debugsources.list because of src
+# is outside of build dir but starting from rhel8 debugsources where moved to
+# separate debugsources rpms that fails build because of empty  debugsources.list file
+# https://pagure.io/releng/issue/6863#comment-467612
+# https://bugzilla.redhat.com/show_bug.cgi?id=1479198
+		RPMBUILD_FLAGS += --define "_debugsource_template %{nil}"
+		RPMBUILD_FLAGS += --define "_debuginfo_subpackages %{nil}"
 		DEPBUILD_FLAGS += --define "__python %__python2"
 	endif
 endif
