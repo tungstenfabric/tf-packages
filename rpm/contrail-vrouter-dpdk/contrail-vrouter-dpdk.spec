@@ -77,21 +77,18 @@ Requires: liburcu2
 Requires: userspace-rcu = 0.10.0-3.el7
 Requires: libnl3
 Requires: numactl-libs
-
 %if %{_enableMlx} == "TRUE"
 BuildRequires: rdma-core-devel = 47mlnx1-1.47329
 Requires: rdma-core = 47mlnx1-1.47329
 Requires: libibverbs = 47mlnx1-1.47329
-%define         _sconsAddOptsMlx    --add-opts=enableMellanox
+%define         _sconsAddOpts      enableMellanox
 %else
-%define         _sconsAddOptsMlx    %{nil}
-%endif
-
 %if %{_enableN3K} == "TRUE"
 BuildRequires: json-c-devel
-%define         _sconsAddOptsN3K    --add-opts=enableN3K
+%define         _sconsAddOpts      enableN3K
 %else
-%define         _sconsAddOptsN3K    %{nil}
+%define         _sconsAddOpts      none
+%endif
 %endif
 
 %description
@@ -110,8 +107,7 @@ RTE_KERNELDIR=%{_kernel_dir} scons -c \
     --opt=%{_sconsOpt} \
     %{_dpdk_args} \
     --root=%{_builddir} \
-    %{_sconsAddOptsMlx} \
-    %{_sconsAddOptsN3K} \
+    --add-opts=%{_sconsAddOpts} \
     --dpdk-jobs="$(%_build_jobs)" \
     vrouter/dpdk
 popd
@@ -124,8 +120,7 @@ RTE_KERNELDIR=%{_kernel_dir} scons \
     --opt=%{_sconsOpt} \
     %{_dpdk_args} \
     --root=%{_builddir} \
-    %{_sconsAddOptsMlx} \
-    %{_sconsAddOptsN3K} \
+    --add-opts=%{_sconsAddOpts} \
     --dpdk-jobs="$(%_build_jobs)" \
     vrouter/dpdk
 popd
