@@ -527,11 +527,11 @@ Requires:           python-unittest2
 Requires:           python-eventlet < 0.19.0
 Requires:           python-enum34
 Requires:           python-keystoneclient
-Requires:           python-barbicanclient
+Requires:           python-barbicanclient <= 5.3
 Requires:           python-pyOpenSSL
-# tpc bin, but conflict for el8 
+# tpc bin, but conflict for el8
 Requires:           python2-docker
-# tpc bin, but conflict for el8 
+# tpc bin, but conflict for el8
 Requires:           python-websocket-client >= 0.32.0
 %endif
 
@@ -548,7 +548,7 @@ Contrail Virtual Router NetNS package
 %post -n python-opencontrail-vrouter-netns
 set -e
 %{__python} -m pip install --no-compile \
-  python-barbicanclient \
+  "python-barbicanclient<=5.3" \
   "docker==2.4.2" \
   enum34 \
   "eventlet < 0.19.0" \
