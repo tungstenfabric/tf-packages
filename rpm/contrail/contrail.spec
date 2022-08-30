@@ -561,7 +561,7 @@ Requires:           python2-requests >= 2.20.0
 Requires:           python-eventlet < 0.19.0
 Requires:           python-enum34
 Requires:           python-keystoneclient
-Requires:           python-barbicanclient
+Requires:           python-barbicanclient <= 5.3
 Requires:           python-pyOpenSSL
 Requires:           python2-future
 Requires:           python-configparser
