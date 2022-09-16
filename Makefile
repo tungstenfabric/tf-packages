@@ -13,7 +13,7 @@ SRCVER       ?= $(shell cat $(SB_TOP)controller/src/base/version.info)
 KVERS        ?= $(shell $(MKFILE_DIR)utils/get_kvers.sh)
 BUILDTAG     ?= $(shell date +%m%d%Y%H%M)
 SKUTAG       ?= ocata
-ENABLEMLX    ?= FALSE
+ENABLEMLX    ?= TRUE
 ENABLEN3K    ?= TRUE
 MANIFESTFILE ?= $(SB_TOP).repo/manifest.xml
 
