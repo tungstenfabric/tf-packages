@@ -1029,7 +1029,7 @@ Requires:          python-importlib
 %if 0%{?rhel} < 8
 Requires:          python-kombu
 Requires:          python-stevedore
-Requires:          python-greenlet
+Requires:          python-greenlet < 2.0.0
 Requires:          python-simplejson
 Requires:          python2-six
 %endif
@@ -1071,7 +1071,7 @@ in the OpenContrail API server.
 set -e
 %{__python} -m pip install --no-compile \
   "gevent>=1.0,<1.5.0" \
-  greenlet \
+  "greenlet<2.0.0" \
   kombu \
   "cassandra-driver>=3.0.0" \
   simplejson \
@@ -1102,7 +1102,7 @@ Obsoletes:         contrail-api-lib <= 0.0.1
 #Requires:          python-consistent_hash
 #%endif
 #Requires:          python3-fysom
-#Requires:          python3-greenlet
+#Requires:          python3-greenlet < 2.0.0
 #Requires:          python3-stevedore
 #Requires:          python3-pycassa
 #Requires:          python3-attrdict
