@@ -606,6 +606,7 @@ Requires:           python-crypto
 Requires:           python-jsonpickle
 Requires:           python-keystoneclient
 Requires:           python-keystonemiddleware
+Requires:           python-keystoneauth1 < 5.1.0
 Requires:           python-lxml >= 2.3.2
 Requires:           python-ncclient >= 0.3.2
 Requires:           python-psutil >= 0.6.0
@@ -683,7 +684,7 @@ set -e
 # in RHEL 7 repos we have to install it from python package in post steps.
 # yum dependency must stay in Requires section to install required deps
 # from yum repos.
-%{__python} -m pip install --upgrade "keystonemiddleware>=5.0.0,<7.0.0"
+%{__python} -m pip install --upgrade "keystonemiddleware>=5.0.0,<7.0.0" "keystoneauth1<5.1.0"
 %else
 %{__python} -m pip install --no-compile \
   amqp \
@@ -695,6 +696,7 @@ set -e
   jsonpickle \
   python-keystoneclient \
   "keystonemiddleware>=5.0.0,<7.0.0" \
+  "keystoneauth1>=5.0.0,<7.0.0" \
   "psutil>=0.6.0" \
   "ncclient>=0.3.2" \
   "pyroute2==0.5.19" \
