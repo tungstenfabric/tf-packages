@@ -620,6 +620,7 @@ Requires:           python2-pysnmp
 %endif
 Requires:           python-keystoneclient
 Requires:           python-keystonemiddleware
+Requires:           python-keystoneauth1 < 5.1.0
 Requires:           python-swiftclient
 Requires:           python2-jmespath
 Requires:           python-subprocess32 >= 3.2.6
@@ -710,7 +711,7 @@ set -e
 # in RHEL 7 repos we have to install it from python package in post steps.
 # yum dependency must stay in Requires section to install required deps
 # from yum repos.
-python2 -m pip install --upgrade "keystonemiddleware>=5.0.0,<7.0.0"
+python2 -m pip install --upgrade "keystonemiddleware>=5.0.0,<7.0.0" "keystoneauth1<5.1.0"
 
 mkdir -p /var/log/contrail /var/lib/contrail/ /etc/contrail/ /etc/ansible
 chown -R contrail:adm /var/log/contrail
