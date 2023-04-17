@@ -696,7 +696,7 @@ set -e
   jsonpickle \
   python-keystoneclient \
   "keystonemiddleware>=5.0.0,<7.0.0" \
-  "keystoneauth1>=5.0.0,<7.0.0" \
+  "keystoneauth1>=5.0.0,<5.1.0" \
   "psutil>=0.6.0" \
   "ncclient>=0.3.2" \
   "pyroute2==0.5.19" \
