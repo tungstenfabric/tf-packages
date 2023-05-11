@@ -749,7 +749,7 @@ Requires:           grok
 Requires:           python2-future
 Requires:           python-configparser
 %if 0%{?rhel} >= 7
-Requires:           python-cassandra-driver >= 3.0.0
+Requires:           python-cassandra-driver < 3.27
 %endif
 
 %description analytics
@@ -1061,7 +1061,7 @@ Requires:          python-stevedore
 Requires:          python-pycassa
 Requires:          python-attrdict
 Requires:          python-bitarray
-Requires:          python-cassandra-driver >= 3.0.0
+Requires:          python-cassandra-driver < 3.27
 
 %description -n python-contrail
 Contrail Virtual Router utils package
