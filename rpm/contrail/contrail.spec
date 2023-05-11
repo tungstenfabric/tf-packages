@@ -745,7 +745,7 @@ Requires:           python-sseclient >= 0.0.26
 Requires:           xmltodict >= 0.7.0
 %if 0%{?rhel} == 7
 # has incompatible deps for el8
-Requires:           python-cassandra-driver >= 3.0.0
+Requires:           python-cassandra-driver < 3.27
 %endif
 
 %description analytics
@@ -797,7 +797,7 @@ set -e
   "redis>=2.10.0,<=3.4.1" \
   "psutil>=0.6.0" \
   prettytable \
-  "cassandra-driver>=3.0.0" \
+  "cassandra-driver<3.27" \
   stevedore
 %endif
 
@@ -1045,7 +1045,7 @@ Requires:          python-pycassa
 Requires:          python-fysom
 %if 0%{?rhel} < 8
 # incompatible deps for el8
-Requires:          python-cassandra-driver >= 3.0.0
+Requires:          python-cassandra-driver < 3.27
 %endif
 
 %description -n python-contrail
@@ -1075,7 +1075,7 @@ set -e
   "gevent>=1.0,<1.5.0" \
   "greenlet<2.0.0" \
   kombu \
-  "cassandra-driver>=3.0.0" \
+  "cassandra-driver<3.27" \
   simplejson \
   "six>=1.12" \
   stevedore
