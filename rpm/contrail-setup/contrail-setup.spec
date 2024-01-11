@@ -47,19 +47,13 @@ Requires:      openstack-utils
 Requires:      python2-devel
 %endif
 Requires:      crudini
-%if 0%{?fedora} >= 17
-#Requires:      python-Fabric
-Requires:      python-crypto
-%endif
 %if 0%{?suse_version}
 Requires:     python-pycrypto
 %endif
 %if 0%{?rhel}
 Requires:      gdb
 %endif
-%if 0%{?rhel} > 6
 Requires:     net-tools
-%endif
 %if 0%{?_is_centos65} == 1
 Requires:     kexec-tools
 %endif

@@ -1,10 +1,6 @@
 %define         _contrailetc /etc/contrail
 %define         _distropkgdir %{_sbtop}tools/packages/rpm/%{name}
 
-%if 0%{?fedora} >= 17
-%define         _servicedir  %{_libdir}/systemd/system
-%endif
-
 %if 0%{?_buildTag:1}
 %define         _relstr      %{_buildTag}
 %else
@@ -44,10 +40,6 @@ Requires:         PyYAML
 Requires:         python2-setuptools
 # tpc
 Requires:         python-configparser
-
-%if 0%{?rhel} && 0%{?rhel} <= 6
-Requires:         python-importlib
-%endif
 
 BuildRequires: bison
 BuildRequires: boost-devel = 1.53.0

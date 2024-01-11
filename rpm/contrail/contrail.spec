@@ -513,9 +513,7 @@ Summary:            OpenContrail vRouter netns
 
 Group:              Applications/System
 
-%if 0%{?rhel} <= 6
-Requires:           python-docker-py
-%endif
+
 Requires:           iptables
 Requires:           iproute >= 3.1.0
 Requires:           python2-requests >= 2.20.0
@@ -584,9 +582,6 @@ Requires:           uwsgi-plugin-python2 >= 2.0.18
 Requires:           uwsgi-plugin-python2-gevent >= 2.0.18
 Requires:           python2-bitarray >= 0.8.0
 Requires:           python2-requests >= 2.20.0
-%if 0%{?rhel} <= 6
-Requires:           python-docker-py
-%endif
   # tpc
 Requires:           python-attrdict
 Requires:           python-configparser
@@ -596,11 +591,7 @@ Requires:           python-pycassa
 Requires:           python-thrift >= 0.9.1
 Requires:           xmltodict >= 0.7.0
 %if 0%{?rhel} < 8
-%if 0%{?rhel} <= 6
-Requires:           python-gevent
-%else
 Requires:           python-gevent >= 1.0
-%endif
 Requires:           python-amqp
 Requires:           python-crypto
 Requires:           python-jsonpickle
@@ -670,10 +661,8 @@ in a NoSQL database.
 %{python_sitelib}/contrail_issu*
 %{_contrailutils}/vcenter-import
 %attr(755, root, root) %{_bindir}/vcenter-import
-%if 0%{?rhel} > 6
 %docdir /usr/share/doc/contrail-config/
 /usr/share/doc/contrail-config/
-%endif
 
 %post config
 set -e
@@ -837,9 +826,7 @@ fi
 %{_bindir}/contrail-rndc
 %{_bindir}/contrail-rndc-confgen
 %attr(755, root, root) %{_bindir}/contrail-dns*
-%if 0%{?rhel} > 6
 %docdir %{python2_sitelib}/doc/*
-%endif
 
 
 %package nova-vif
@@ -1017,16 +1004,10 @@ Obsoletes:         contrail-api-lib <= 0.0.1
 %if 0%{?rhel} < 8
 Requires:          python-gevent >= 1.0
 %endif
-%if 0%{?rhel} <= 6
-Requires:          python-gevent
-%endif
 %if 0%{?rhel}
 Requires:          consistent_hash
 %else
 Requires:          python-consistent_hash
-%endif
-%if 0%{?rhel} <= 6
-Requires:          python-importlib
 %endif
 %if 0%{?rhel} < 8
 Requires:          python-kombu
@@ -1095,9 +1076,6 @@ Obsoletes:         contrail-api-lib <= 0.0.1
 #Requires:          python3-simplejson
 #Requires:          python3-kombu
 #Requires:          python3-bottle >= 0.11.6
-#%if 0%{?rhel} >= 7
-#Requires:          python3-gevent >= 1.0
-#%endif
 #%if 0%{?rhel}
 #Requires:          consistent_hash
 #%else

@@ -1,9 +1,6 @@
 %define     _distropkgdir       %{_sbtop}tools/packages/rpm/%{name}
 %define    _contrailetc     /etc/contrail
 %define    _contrailwebsrc   /usr/src/contrail/contrail-web-core
-%if 0%{?fedora} >= 17
-%define    _servicedir      %{_libdir}/systemd/system
-%endif
 %define    _nodemodules    node_modules/
 %define    _config          %{_sbtop}contrail-web-core/config
 %define    _contrailuitoolsdir  src/tools
@@ -69,16 +66,10 @@ make package REPO=../contrail-web-core
 
 %install
 rm -rf %{buildroot}%{_contrailwebsrc}
-%if 0%{?fedora} >= 17
-rm -rf %{buildroot}%{_servicedir}
-%endif
 rm -rf %{buildroot}%{_libdir}/node_modules
 rm -rf %{buildroot}%{_contrailetc}
 
 mkdir -p %{buildroot}%{_contrailwebsrc}
-%if 0%{?fedora} >= 17
-mkdir -p %{buildroot}%{_servicedir}
-%endif
 mkdir -p %{buildroot}%{_libdir}/node_modules
 mkdir -p %{buildroot}%{_contrailetc}
 
@@ -102,9 +93,6 @@ ln -s %{_contrailetc}/contrail-webui-userauth.js %{buildroot}%{_contrailwebsrc}/
 %files
 %defattr(-,root,root)
 %{_contrailwebsrc}/*
-%if 0%{?fedora} >= 17
-%{_servicedir}/*
-%endif
 %{_libdir}/*
 %config(noreplace) %{_contrailetc}/config.global.js
 %config(noreplace) %{_contrailetc}/contrail-webui-userauth.js
