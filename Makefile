@@ -81,19 +81,30 @@ SCONSFLAGS := -j $(shell nproc)
 export BUILD_ONLY := TRUE
 export SCONSFLAGS := $(SCONSFLAGS)
 
-all: dep rpm
+all: install-dnf dep rpm
 	@echo $(PACKAGES)
 	@echo $(DEPENDENCIES)
 
-.PHONY: all rpm dep kernel-deps testdeps-rpms
+dep: install-dnf $(DEPENDENCIES) kernel-deps
 
-dep: $(DEPENDENCIES) kernel-deps
+install-dnf:
+	@echo "Installing DNF package manager..."
+	@sudo yum install -y dnf dnf-plugins-core
+
+.PHONY: all rpm dep kernel-deps testdeps-rpms install-dnf
+
 rpm: $(PACKAGES) testdeps-rpms
 
 dep-%:
 	$(eval SPECFILE = $(filter %/$(patsubst dep-%,%.spec,$@), $(SPEC_FILES)))
 	@echo Installing dependencies for $(SPECFILE) DEPBUILD_FLAGS=$(DEPBUILD_FLAGS) ...
-	@yum-builddep $(DEPBUILD_FLAGS) -y $(SPECFILE)
+	@if command -v dnf > /dev/null; then \
+		echo "Using dnf to install dependencies"; \
+		sudo dnf builddep $(DEPBUILD_FLAGS) -y $(SPECFILE); \
+	else \
+		echo "dnf is not available, falling back to yum-builddep"; \
+		sudo yum-builddep $(DEPBUILD_FLAGS) -y $(SPECFILE); \
+	fi
 
 kernel-deps:
 	$(MKFILE_DIR)utils/install_kernels.sh
