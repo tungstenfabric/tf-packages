@@ -239,7 +239,6 @@ popd
 # Install section of contrail-config package - Start
 install -d -m 755 %{buildroot}%{_fabricansible}
 install -p -m 755 %{buildroot}/usr/bin/fabric_ansible_playbooks*.tar.gz %{buildroot}%{_fabricansible}/
-install -p -m 755 %{buildroot}/usr/bin/vcenter-import %{buildroot}%{_contrailutils}/
 # Install section of contrail-config package - End
 
 # Install section of contrail-manifest package - Start
@@ -659,8 +658,6 @@ in a NoSQL database.
 %{python_sitelib}/device_api*
 %{python_sitelib}/abstract_device_api*
 %{python_sitelib}/contrail_issu*
-%{_contrailutils}/vcenter-import
-%attr(755, root, root) %{_bindir}/vcenter-import
 %docdir /usr/share/doc/contrail-config/
 /usr/share/doc/contrail-config/
 
