@@ -912,46 +912,6 @@ set -e
 %endif
 
 
-%package mesos-manager
-Summary:            Mesos network manager
-
-Group:              Applications/System
-
-Requires:    python-contrail >= %{_verstr}-%{_relstr}
-%if 0%{?rhel} < 8
-Requires:    python-gevent >= 1.0
-Requires:    python-enum34
-%endif
-Requires:    python2-requests >= 2.20.0
-Requires:    python2-future
-# tpc
-Requires:    python-configparser
-Requires:    python-kazoo
-
-%description mesos-manager
-Contrail Mesos network manager package
-This package contains the mesos network management modules.
-%files mesos-manager
-%{python_sitelib}/mesos_manager*
-%{_bindir}/contrail-mesos-manager
-
-%pre mesos-manager
-set -e
-# Create the "contrail" user
-getent group contrail >/dev/null || groupadd -r contrail
-getent passwd contrail >/dev/null || \
-  useradd -r -g contrail -d /var/lib/contrail -s /bin/false \
-  -c "OpenContail daemon" contrail
-
-%if 0%{?rhel} >= 8
-%post mesos-manager
-set -e
-%{__python} -m pip install --no-compile \
-  enum34 \
-  "gevent>=1.0,<1.5.0"
-%endif
-
-
 %package k8s-cni
 Summary:            Kubernetes cni plugin
 Group:              Applications/System
@@ -963,16 +923,6 @@ This package contains the kubernetes cni plugin modules.
 %files k8s-cni
 %{_bindir}/contrail-k8s-cni
 
-%package mesos-cni
-Summary:            Mesos cni plugin
-Group:              Applications/System
-
-%description mesos-cni
-Contrail mesos cni plugin package
-This package contains the mesos cni plugin modules.
-
-%files mesos-cni
-%{_bindir}/contrail-mesos-cni
 
 %if 0%{?_manifestFile:1}
 
