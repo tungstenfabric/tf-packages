@@ -68,10 +68,6 @@ BuildRequires: bison
 BuildRequires: gcc-c++
 BuildRequires: libpcap
 BuildRequires: libpcap-devel
-%if 0%{?centos}
-BuildRequires: python2-pip
-BuildRequires: python3-pip
-%endif
 Requires: which
 Requires: liburcu2
 Requires: userspace-rcu = 0.10.0-3.el7

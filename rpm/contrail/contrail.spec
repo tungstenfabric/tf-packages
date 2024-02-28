@@ -107,6 +107,7 @@ BuildRequires: vim-common
 BuildRequires: zlib-devel
 BuildRequires: libcmocka-devel
 BuildRequires: libxslt-devel
+BuildRequires: PyYAML
 
 %description
 Contrail package describes all sub packages that are required to
